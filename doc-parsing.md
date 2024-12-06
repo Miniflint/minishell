@@ -35,4 +35,4 @@ toutes les env variables sont evaluee au moment de l'utilisation
 
 single quote: interprete pas les variables / asterisques
 
-
+take care of CDPATH variable -> should be added if updated
