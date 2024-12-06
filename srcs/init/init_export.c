@@ -6,11 +6,11 @@
 /*   By: lgenevey <lgenevey@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 10:29:53 by lgenevey          #+#    #+#             */
-/*   Updated: 2022/11/14 00:44:35 by lgenevey         ###   ########.fr       */
+/*   Updated: 2024/12/06 17:42:31 by trgoel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../incs/minishell.h"
+#include "minishell.h"
 
 /*
 	creates new node for t_variable linked list

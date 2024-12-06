@@ -6,11 +6,11 @@
 /*   By: hrolle <hrolle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 18:25:57 by lgenevey          #+#    #+#             */
-/*   Updated: 2022/12/02 03:38:03 by hrolle           ###   ########.fr       */
+/*   Updated: 2024/12/06 17:37:55 by trgoel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../incs/minishell.h"
+#include "minishell.h"
 #include "../../printfd/HEADER/ft_printfd.h"
 
 int	check_exit_code(char **args)

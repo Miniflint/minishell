@@ -6,7 +6,7 @@
 /*   By: hrolle <hrolle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 00:31:19 by hermesrolle       #+#    #+#             */
-/*   Updated: 2022/11/10 23:38:06 by hrolle           ###   ########.fr       */
+/*   Updated: 2024/12/05 18:07:37 by trgoel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,15 @@ void	interpret(t_cmdli **cmds_list, char **cmdline,
 		type_and_set(split_cmd(cmdline, i, '|'), cmds_list, type, 1);
 	else if ((*cmdline)[*i] == '&')
 		type_and_set(split_cmd(cmdline, i, '&'), cmds_list, type, 1);
+//	else if ((*cmdline)[*i] == '(')
+//		// todo, ajouter fonction pour open parenthese
+//		ft_printfd(1, "blablabla '(' %i\n", ++*i);
+//	else if ((*cmdline)[*i] == ')')
+//		// todo, ajouter fonction pour close parenthese
+//		ft_printfd(1, "blablabla ')' %i\n", ++*i);
+//	else if ((*cmdline)[*i] == '*' || (*cmdline)[*i] == '$')
+//		// todo, ajouter fonction pour expend les matchs
+//		ft_printfd(1, "blablabla * and $ %i\n", ++*i);
 	else
 		type_and_set(split_cmd_sp(cmdline, i), cmds_list, type, 0);
 }

@@ -6,11 +6,11 @@
 /*   By: lgenevey <lgenevey@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 04:32:21 by hrolle            #+#    #+#             */
-/*   Updated: 2022/12/05 11:08:17 by lgenevey         ###   ########.fr       */
+/*   Updated: 2024/12/06 17:42:07 by trgoel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../incs/minishell.h"
+#include "minishell.h"
 
 /*
 	Our getenv function

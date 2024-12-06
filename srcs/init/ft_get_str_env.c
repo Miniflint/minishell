@@ -6,11 +6,11 @@
 /*   By: hermesrolle <hermesrolle@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 09:20:33 by hermesrolle       #+#    #+#             */
-/*   Updated: 2022/11/03 09:25:44 by hermesrolle      ###   ########.fr       */
+/*   Updated: 2024/12/06 17:42:01 by trgoel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../incs/minishell.h"
+#include "minishell.h"
 
 char	**ft_get_str_env(void)
 {

@@ -6,11 +6,11 @@
 /*   By: hrolle <hrolle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 12:23:07 by lgenevey          #+#    #+#             */
-/*   Updated: 2022/11/29 18:04:47 by hrolle           ###   ########.fr       */
+/*   Updated: 2024/12/06 17:38:11 by trgoel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../incs/minishell.h"
+#include "minishell.h"
 #include "../../printfd/HEADER/ft_printfd.h"
 
 // getcwd : Get the name of the current working directory

@@ -6,11 +6,11 @@
 /*   By: lgenevey <lgenevey@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 18:09:31 by lgenevey          #+#    #+#             */
-/*   Updated: 2022/12/05 12:24:44 by lgenevey         ###   ########.fr       */
+/*   Updated: 2024/12/06 17:36:21 by trgoel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../incs/minishell.h"
+#include "minishell.h"
 #include "../../printfd/HEADER/ft_printfd.h"
 
 /*

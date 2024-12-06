@@ -6,11 +6,11 @@
 /*   By: hrolle <hrolle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 01:05:01 by hrolle            #+#    #+#             */
-/*   Updated: 2022/11/28 18:59:19 by hrolle           ###   ########.fr       */
+/*   Updated: 2024/12/06 17:40:47 by trgoel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../incs/minishell.h"
+#include "minishell.h"
 
 int	ft_strchr_path(char *s, char *path, int c)
 {

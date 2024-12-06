@@ -6,11 +6,11 @@
 /*   By: lgenevey <lgenevey@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/14 17:46:34 by lgenevey          #+#    #+#             */
-/*   Updated: 2022/12/05 16:19:18 by lgenevey         ###   ########.fr       */
+/*   Updated: 2024/12/06 17:42:57 by trgoel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../incs/minishell.h"
+#include "minishell.h"
 #include "../../printfd/HEADER/ft_printfd.h"
 
 void	handle_interrupt(int sig)

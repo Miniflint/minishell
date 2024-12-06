@@ -6,11 +6,11 @@
 /*   By: hrolle <hrolle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 19:15:50 by hrolle            #+#    #+#             */
-/*   Updated: 2022/12/02 19:57:25 by hrolle           ###   ########.fr       */
+/*   Updated: 2024/12/06 17:39:42 by trgoel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../incs/minishell.h"
+#include "minishell.h"
 #include "../../printfd/HEADER/ft_printfd.h"
 
 int	close_pipe(int *pipe)

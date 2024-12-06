@@ -6,11 +6,11 @@
 /*   By: hrolle <hrolle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/14 16:49:17 by lgenevey          #+#    #+#             */
-/*   Updated: 2022/11/30 23:05:46 by hrolle           ###   ########.fr       */
+/*   Updated: 2024/12/06 17:42:37 by trgoel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../incs/minishell.h"
+#include "minishell.h"
 
 void	init_shell(t_shell *shell, char **m_env)
 {

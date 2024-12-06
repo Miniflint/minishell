@@ -6,11 +6,11 @@
 /*   By: hrolle <hrolle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 01:17:32 by lgenevey          #+#    #+#             */
-/*   Updated: 2022/11/03 01:43:54 by hrolle           ###   ########.fr       */
+/*   Updated: 2024/12/06 17:41:48 by trgoel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../incs/minishell.h"
+#include "minishell.h"
 
 t_variable	*ft_get_env(void)
 {

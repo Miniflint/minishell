@@ -6,7 +6,7 @@
 #    By: hrolle <hrolle@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/10 14:02:39 by lgenevey          #+#    #+#              #
-#    Updated: 2022/12/05 15:09:19 by hrolle           ###   ########.fr        #
+#    Updated: 2024/12/06 17:43:08 by trgoel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,8 @@ LIBS := -Llibft -lft -lreadline
 INC_FLAGS += -I$(HOME)/.brew/opt/readline/include
 LIBS += -L$(HOME)/.brew/opt/readline/lib
 
+INC_MINISHELL := ./incs/
+
 OBJS	=	$(SRCS:.c=.o)
 CC		=	gcc
 RM		=	rm -f
@@ -56,14 +58,14 @@ all:	$(NAME)
 
 %.o: %.c
 	@printf "Compiling %-100s \r" $<
-	@$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) -I$(INC_MINISHELL)  $(CFLAGS) -c $< -o $@
 
 $(NAME)	: $(OBJS)
 	@echo "$(BLUE)Making libft and bonuses...                      $(NONE)"
 	@$(MAKE) -C printfd
 	@$(MAKE) -C libft
 	@$(MAKE) -C libft bonus
-	@$(CC) $(CFLAGS) $(INC_FLAGS) $(OBJS) $(LIBS) printfd/libftprintfd.a -o $(NAME)
+	@$(CC) $(CFLAGS) $(INC_FLAGS) -I$(INC_MINISHELL) $(OBJS) $(LIBS) printfd/libftprintfd.a -o $(NAME)
 	@printf "$(GREEN) $(NAME) ready.\n$(NONE)"
 
 norm:

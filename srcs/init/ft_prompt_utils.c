@@ -6,11 +6,11 @@
 /*   By: hermesrolle <hermesrolle@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 11:19:33 by hrolle            #+#    #+#             */
-/*   Updated: 2022/11/18 10:25:58 by hermesrolle      ###   ########.fr       */
+/*   Updated: 2024/12/06 17:42:15 by trgoel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../incs/minishell.h"
+#include "minishell.h"
 
 void	prompt_cat(char *prompt, const char *element, unsigned int *i)
 {

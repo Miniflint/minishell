@@ -6,11 +6,11 @@
 /*   By: hermesrolle <hermesrolle@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 23:40:46 by hrolle            #+#    #+#             */
-/*   Updated: 2022/11/26 02:18:06 by hermesrolle      ###   ########.fr       */
+/*   Updated: 2024/12/06 17:42:49 by trgoel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../incs/minishell.h"
+#include "minishell.h"
 #include "../../printfd/HEADER/ft_printfd.h"
 
 int	return_error(int error, char *custom)

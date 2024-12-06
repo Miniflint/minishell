@@ -6,11 +6,11 @@
 /*   By: hrolle <hrolle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 22:52:41 by lgenevey          #+#    #+#             */
-/*   Updated: 2022/12/05 14:49:17 by hrolle           ###   ########.fr       */
+/*   Updated: 2024/12/06 17:36:10 by trgoel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../incs/minishell.h"
+#include "minishell.h"
 
 static void	add_and_free_new_value(t_variable *current, t_variable *new)
 {

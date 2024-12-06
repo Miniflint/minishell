@@ -6,11 +6,11 @@
 /*   By: hrolle <hrolle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 17:10:05 by hrolle            #+#    #+#             */
-/*   Updated: 2022/12/01 00:37:49 by hrolle           ###   ########.fr       */
+/*   Updated: 2024/12/06 17:42:10 by trgoel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../incs/minishell.h"
+#include "minishell.h"
 #include "../../printfd/HEADER/ft_printfd.h"
 
 void	ft_print_prompt(void)
