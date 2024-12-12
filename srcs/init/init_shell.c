@@ -12,6 +12,18 @@
 
 #include "minishell.h"
 
+void	init_shell(t_shell *shell, char **m_env)
+{
+	shell->env = init_env(m_env);
+	shell->export = init_export();
+	shell->str_env = m_env;
+	shell->if_sig = 1;
+}
+
+/*
+
+#include "minishell.h"
+
 char *ft_strjoin_free(char *s1, char *s2)
 {
 	int		i;
@@ -33,12 +45,12 @@ char *ft_strjoin_free(char *s1, char *s2)
 	return (new_str);
 }
 
-void	change_env_str(void)
+char	**change_env_str(char **env_str)
 {
-	char	**env_str;
+	char	**ret;
 	char	*str;
 
-	env_str = ft_get_str_env();
+	ret = env_str;
 	while (*env_str)
 	{
 		if (ft_strncmp(*env_str, "SHLVL=", 6) == 0)
@@ -51,13 +63,16 @@ void	change_env_str(void)
 	str++;
 	str = ft_strjoin_free("SHLVL=", ft_itoa(ft_atoi(str) + 1));
 	*env_str = str;
+	return (ret);
 }
 
 void	init_shell(t_shell *shell, char **m_env)
 {
 	shell->str_env = m_env;
-	change_env_str();
+	shell->str_env = change_env_str(shell->str_env);
 	shell->env = init_env(shell->str_env);
 	shell->export = init_export();
 	shell->if_sig = 1;
 }
+
+*/
