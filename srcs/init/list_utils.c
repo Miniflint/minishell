@@ -58,11 +58,9 @@ void	insert_new_node(t_variable **export, t_variable *new)
 {
 	t_variable	*prev;
 	t_variable	*current;
-	static int	i;
 
 	prev = NULL;
 	current = *export;
-	i++;
 	while (current)
 	{
 		if (ft_strcmp(current->name, new->name) >= 0)
