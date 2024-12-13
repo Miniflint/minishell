@@ -77,7 +77,7 @@ t_variable	*init_env(char **m_env)
 	++m_env;
 	while (*m_env)
 	{
-		if (ft_strncmp(*m_env, "OLDPWD", 6) == 0)
+		if (ft_strncmp(*m_env, "OLDPWD=", 7) == 0)
 			++m_env;
 		node->next = create_var_node(*(m_env++));
 		node = node->next;
