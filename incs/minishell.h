@@ -30,10 +30,10 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
-typedef struct S_slist
+typedef struct s_slist
 {
 	char			*str;
-	struct S_slist	*next;
+	struct s_slist	*next;
 }	t_slist;
 
 typedef struct s_variable
@@ -53,6 +53,13 @@ typedef struct s_shell
 	int					say;
 }	t_shell;
 
+typedef enum e_qtype
+{
+	NO,
+	QUOTE,
+	DQUOTE
+}			t_qtype;
+
 typedef enum e_type
 {
 	EMPTY,
@@ -67,14 +74,22 @@ typedef enum e_type
 	ANDOR
 }			t_type;
 
-typedef struct S_file
+typedef struct s_unlist
+{
+	t_type			type;
+	t_qtype			quote;
+	struct s_unlist	*next;
+}					t_unlist;
+
+typedef struct s_file
 {
 	t_type	type;
 	char	*name;
 }			t_file;
 
-typedef struct S_cmdli
+typedef struct s_cmdli
 {
+	t_unlist		*tokens;
 	char			*cmd;
 	char			**cmd_args;
 	int				*pipe_in;
@@ -87,8 +102,8 @@ typedef struct S_cmdli
 	int				and_or;
 	pid_t			pid;
 	int				cmd_error;
-	struct S_cmdli	*previous;
-	struct S_cmdli	*next;
+	struct s_cmdli	*previous;
+	struct s_cmdli	*next;
 }					t_cmdli;
 
 // Parsing

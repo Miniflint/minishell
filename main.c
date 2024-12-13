@@ -57,13 +57,13 @@ int	main(int ac, char **av, char **env)
 	t_cmdli	*cmdli;
 	int		status;
 
+	(void)av;
 	status = 0;
 	cmdli = NULL;
 	ft_get_shell(&shell);
 	init_shell(&shell, env);
 	ft_say_check(ac, &shell);
 	print_minishell();
-	(void)av;
 	term_handler();
 	signal(SIGQUIT, SIG_IGN);
 	sig_mode(1);
