@@ -34,6 +34,8 @@ char	*split_cmd_sp_ret(char	**cmdline, char *ret,
 	return (ret);
 }
 
+// Utile pour la suite :
+
 char	*split_cmd_sp_add_func(char **cmdline, char *ret, unsigned int *i)
 {
 	if (((*cmdline)[*i] && (*cmdline)[*i] == '$'))
