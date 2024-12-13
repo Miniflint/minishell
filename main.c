@@ -2,6 +2,8 @@
 #include "printfd/HEADER/ft_printfd.h"
 #include <stdio.h>
 
+int g_errno;
+
 void	execution(t_cmdli *cmdli, int status)
 {
 	t_cmdli	*cmdli_i;

@@ -20,7 +20,7 @@
 # include <readline/history.h>
 
 //globale pour recuperer la valeur du statut de exit
-int	g_errno;
+extern int	g_errno;
 
 typedef struct s_token
 {
