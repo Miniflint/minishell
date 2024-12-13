@@ -36,7 +36,7 @@ static void	free_shell_variables(void)
 	while (*m_env)
 	{
 		if (ft_strncmp(*m_env, "SHLVL=", 6) == 0)
-			free(*m_env)
+			free(*m_env);
 		m_env++;
 	}
 }

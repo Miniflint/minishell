@@ -10,5 +10,5 @@ void	ft_pwd(t_cmdli **cmdli)
 	cwd = getcwd(buff, PATH_MAX);
 	if (cwd != NULL)
 		ft_printfd((*cmdli)->fd_out, "%s\n", cwd);
-		g_errno = 0;
+	g_errno = 0;
 }

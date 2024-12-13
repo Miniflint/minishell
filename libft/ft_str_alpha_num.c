@@ -20,7 +20,7 @@ int	ft_str_alpha_num(char *s)
 			&& (*s < 'A' || *s > 'Z')
 			&& (*s < '0' || *s > '9'))
 			return (0);
-			s++;
+		s++;
 	}
 	return (1);
 }
