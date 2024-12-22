@@ -1,0 +1,42 @@
+DIRECTORY:
+	d_name: [.]
+
+DIRECTORY:
+	d_name: [..]
+
+REGULAR FILE:
+	d_name: [match.c]
+
+DIRECTORY:
+	d_name: [init]
+
+REGULAR FILE:
+	d_name: [.match.c.swp]
+
+DIRECTORY:
+	d_name: [images]
+
+DIRECTORY:
+	d_name: [signals]
+
+DIRECTORY:
+	d_name: [fun]
+
+DIRECTORY:
+	d_name: [builtins]
+
+REGULAR FILE:
+	d_name: [quick_split_stole_from_libft.c]
+
+DIRECTORY:
+	d_name: [secure]
+
+DIRECTORY:
+	d_name: [execution]
+
+DIRECTORY:
+	d_name: [parsing]
+
+DIRECTORY:
+	d_name: [old_parsing]
+
