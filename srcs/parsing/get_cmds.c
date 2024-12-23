@@ -22,9 +22,6 @@ void	interpret(t_cmdli **cmds_list, char **cmdline,
 //	else if ((*cmdline)[*i] == ')')
 //		// todo, ajouter fonction pour close parenthese
 //		ft_printfd(1, "blablabla ')' %i\n", ++*i);
-//	else if ((*cmdline)[*i] == '*' || (*cmdline)[*i] == '$')
-//		// todo, ajouter fonction pour expend les matchs
-//		ft_printfd(1, "blablabla * and $ %i\n", ++*i);
 	else
 		type_and_set(split_cmd_sp(cmdline, i), cmds_list, type, 0);
 }

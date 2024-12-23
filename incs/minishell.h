@@ -77,7 +77,7 @@ typedef enum e_type
 typedef struct s_unlist
 {
 	t_type			type;
-	t_qtype			quote;
+	char			*token;
 	struct s_unlist	*next;
 }					t_unlist;
 

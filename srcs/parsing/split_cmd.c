@@ -36,11 +36,11 @@ char	*split_cmd_sp_ret(char	**cmdline, char *ret,
 
 char	*split_cmd_sp_add_func(char **cmdline, char *ret, unsigned int *i)
 {
-	if (((*cmdline)[*i] && (*cmdline)[*i] == '$'))
-		return (add_var(cmdline, ret, i));
-	if ((*cmdline)[*i] == '~')
-		return (add_home(i));
-	else if ((*cmdline)[*i] && (*cmdline)[*i] == '\'')
+	// if (((*cmdline)[*i] && (*cmdline)[*i] == '$'))
+	// 	return (add_var(cmdline, ret, i));
+	// if ((*cmdline)[*i] == '~')
+	// 	return (add_home(i));
+	if ((*cmdline)[*i] && (*cmdline)[*i] == '\'')
 		return (add_quote(cmdline, ret, i));
 	else if ((*cmdline)[*i] && (*cmdline)[*i] == '"')
 		return (add_dquote(cmdline, ret, i));
@@ -48,7 +48,7 @@ char	*split_cmd_sp_add_func(char **cmdline, char *ret, unsigned int *i)
 }
 
 char	*split_cmd_sp(char **cmdline, unsigned int *i)
-{
+{ //ne pas gerer ici ~, $ et *
 	unsigned int	j;
 	char			*ret;
 

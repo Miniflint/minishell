@@ -7,13 +7,12 @@ char	*add_quote(char **cmdline, char *str, unsigned int *i)
 	char			*tmp;
 	char			*new;
 
-	++*i;
 	ret = NULL;
-	j = 0;
+	j = 1;
 	while ((*cmdline)[*i + j] && (*cmdline)[*i + j] != '\'')
 		j++;
 	tmp = str;
-	new = ft_substr((*cmdline), *i, j);
+	new = ft_substr((*cmdline), *i, ++j);
 	if (!new)
 	{
 		if (tmp)
@@ -25,6 +24,6 @@ char	*add_quote(char **cmdline, char *str, unsigned int *i)
 	if (tmp)
 		free(tmp);
 	if (ret)
-		*i += j + 1;
+		*i += j;
 	return (ret);
 }
