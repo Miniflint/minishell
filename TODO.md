@@ -6,6 +6,9 @@
 - [ ] parse tokens unlist
 
 - [ ] match
+  - [ ] besoin de conditions pour:
+    - [ ] que des directory: (ends with /)
+    - [ ] recursif a travers les dossiers: (double * + .)
 
 optional:
 - [ ] parsing for bonuses
