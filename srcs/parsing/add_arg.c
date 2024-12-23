@@ -1,14 +1,14 @@
 #include "../../incs/minishell.h"
 
-void	add_arg(t_cmdli **cmds_list, char *arg, t_type *type)
+int	add_arg(t_cmdli *cmdli, char *arg)
 {
 	char	**tmp;
 
-	*type = ARG;
-	tmp = (*cmds_list)->cmd_args;
-	(*cmds_list)->cmd_args = ft_strsjoin(arg, tmp);
+	tmp = cmdli->cmd_args;
+	cmdli->cmd_args = ft_strsjoin(arg, tmp);
 	if (tmp)
 		free(tmp);
-	if (!(*cmds_list)->cmd_args)
-		return (error_cmdli(cmds_list, "minishell: memory allocation failed\n"));
+	if (!cmdli->cmd_args)
+		return (1);
+	return (0);
 }

@@ -1,6 +1,6 @@
 #include "../../incs/minishell.h"
 
-char	*split_cmd(char *(*cmdline), unsigned int *i, char c)
+char	*split_cmd(char **cmdline, unsigned int *i, char c)
 {
 	unsigned int	j;
 
@@ -58,12 +58,11 @@ char	*split_cmd_sp(char **cmdline, unsigned int *i)
 		!= '|' && (*cmdline)[*i] != '&')
 	{
 		j = 0;
-		while ((*cmdline)[*i + j] && (*cmdline)[*i + j] != '$'
-			&& (*cmdline)[*i + j] != ' ' && (*cmdline)[*i + j]
-			!= '<' && (*cmdline)[*i + j] != '>' && (*cmdline)[*i + j]
-			!= '|' && (*cmdline)[*i + j] != '&' && (*cmdline)[*i + j]
-			!= '\'' && (*cmdline)[*i + j] != '"' && !(!j && !ret
-			&& (*cmdline)[*i + j] == '~' && ((*cmdline)[*i + j + 1] == '/'
+		while ((*cmdline)[*i + j] && (*cmdline)[*i + j] != ' '
+			&& (*cmdline)[*i + j] != '<' && (*cmdline)[*i + j] != '>'
+			&& (*cmdline)[*i + j] != '|' && (*cmdline)[*i + j]
+			!= '&' && (*cmdline)[*i + j] != '\'' && (*cmdline)[*i + j]
+			!= '"' && !(!j && !ret && ((*cmdline)[*i + j + 1] == '/'
 			|| (*cmdline)[*i + j + 1] == ' ' || !(*cmdline)[*i + j + 1])))
 			++j;
 		if (j)

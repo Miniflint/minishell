@@ -15,8 +15,24 @@ void	free_file(t_file **files)
 	free(files);
 }
 
+void	free_unlist(t_cmdli *cmdli)
+{
+	t_unlist	*tmp;
+
+	cmdli->tok_cursor = cmdli->tokens;
+	while (cmdli->tok_cursor)
+	{
+		tmp = cmdli->tok_cursor;
+		cmdli->tok_cursor = cmdli->tok_cursor->next;
+		free(tmp);
+	}
+	cmdli->tokens = NULL;
+}
+
 void	free_content(t_cmdli *cmdli)
 {
+	if (cmdli->tokens)
+		free_unlist(cmdli);
 	if (cmdli->cmd_args)
 		free_tab(cmdli->cmd_args);
 	if (cmdli->pipe_in)

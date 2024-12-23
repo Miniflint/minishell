@@ -12,6 +12,7 @@ void	execution(t_cmdli *cmdli, int status)
 	while (cmdli_i)
 	{
 		sig_mode(1);
+		store_tokens(cmdli_i);
 		if (!cmdli_i->cmd)
 			no_cmd(&cmdli_i);
 		else if (cmdli_i->pipe_in || cmdli_i->pipe_out)
@@ -19,7 +20,7 @@ void	execution(t_cmdli *cmdli, int status)
 		else
 			is_builtin(&cmdli_i, 0);
 		sig_mode(0);
-		if (cmdli_i)
+		// if (cmdli_i)
 			cmdli_i = cmdli_i->next;
 	}
 	while (wait(&status) != -1)

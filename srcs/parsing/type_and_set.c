@@ -30,10 +30,9 @@ void	type_and_set(char *s, t_cmdli **cmds_list, t_type *type, int interpret)
 
 	if (!s)
 		return (error_cmdli(cmds_list, "memory allocation failed\n"));
+	rd = 0;
 	if (*type == RDI || *type == RDO || *type == RDIH || *type == RDOA)
 		rd = 1;
-	else
-		rd = 0;
 	if (!*cmds_list)
 		*cmds_list = create_cmdli();
 	if (!*cmds_list)
@@ -43,10 +42,14 @@ void	type_and_set(char *s, t_cmdli **cmds_list, t_type *type, int interpret)
 	else
 	{
 		if (*type == CMD || *type == ARG)
-			add_arg(cmds_list, s, type);
+			*type = ARG;
 		else if (!rd)
-			add_cmd(cmds_list, s, type);
-		else
-			add_file(cmds_list, s, type);
+			*type = CMD;
+		if (*type == RDIH)
+			write_heredoc(cmds_list, s);
+		else if (new_unlist(*cmds_list, s, *type))
+			return (error_cmdli(cmds_list, "memory allocation failed\n"));
+		if (rd)
+			*type = RFILE;
 	}
 }

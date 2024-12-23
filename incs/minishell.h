@@ -53,13 +53,6 @@ typedef struct s_shell
 	int					say;
 }	t_shell;
 
-typedef enum e_qtype
-{
-	NO,
-	QUOTE,
-	DQUOTE
-}			t_qtype;
-
 typedef enum e_type
 {
 	EMPTY,
@@ -90,6 +83,7 @@ typedef struct s_file
 typedef struct s_cmdli
 {
 	t_unlist		*tokens;
+	t_unlist		*tok_cursor;
 	char			*cmd;
 	char			**cmd_args;
 	int				*pipe_in;
@@ -108,9 +102,11 @@ typedef struct s_cmdli
 
 // Parsing
 void		free_tab(char **ss);
+int			new_unlist(t_cmdli *cmdli, char *s, t_type type);
 t_cmdli		*cmdli_first(t_cmdli *cmds_list);
 void		free_content(t_cmdli *cmdli);
 void		free_cmdli(t_cmdli **cmdli);
+void		free_unlist(t_cmdli *cmdli);
 void		free_file(t_file **files);
 t_cmdli		*error_cmdli_nl(t_cmdli **cmds_list);
 void		error_cmdli(t_cmdli **cmds_list, char *s);
@@ -129,15 +125,18 @@ char		*split_cmd_sp(char **cmdline, unsigned int *i);
 t_cmdli		*create_cmdli(void);
 void		add_pipe(t_cmdli **cmds_list, t_type *type);
 void		add_andor(t_cmdli **cmds_list, t_type *type, int and_or);
-void		add_arg(t_cmdli **cmds_list, char *arg, t_type *type);
-void		add_cmd(t_cmdli **cmds_list, char *cmd, t_type *type);
-void		file_rdi(t_cmdli **cmds_list, char *file);
-void		file_rdo(t_cmdli **cmds_list, char *file, t_type type);
-void		file_heredoc(t_cmdli **cmds_list, char *file);
-void		add_file(t_cmdli **cmds_list, char *file, t_type *type);
+int			add_arg(t_cmdli *cmdli, char *arg);
+int			add_cmd(t_cmdli *cmdli, char *cmd);
+int			file_rdi(t_cmdli *cmdli, char *file);
+int			file_rdo(t_cmdli *cmdli, char *file, t_type type);
+//void		file_heredoc(t_cmdli **cmds_list, char *file);
+int			add_file(t_cmdli *cmdli, char *file, t_type type);
 void		type_and_set(char *s, t_cmdli **cmds_list,
 				t_type *type, int interpret);
 t_cmdli		*get_cmds(char **cmdline);
+
+// Parsing step 2
+int		store_tokens(t_cmdli *cmdli);
 
 // List utils
 void		free_nodes(t_variable **list);
@@ -208,7 +207,7 @@ void		is_builtin(t_cmdli **cmdli, int mode);
 void		exec_builtin(void (*f)(t_cmdli **), t_cmdli **cmdli, int mode);
 int			builtin_fork(void (*f)(t_cmdli **), t_cmdli **cmdli);
 
-//void		is_absolute_path(char **args, t_list *env);
+void		is_absolute_path(char **args, t_list *env);
 char		*no_path(char *cmd, char *path);
 char		*path_join(char *path, char *cmd, unsigned int path_len,
 				unsigned int cmd_len);

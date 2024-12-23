@@ -6,9 +6,9 @@
 - [ ] parse tokens unlist
 
 - [ ] change for new 2 step parsing :
-  - [ ] change type_and_set for t_token
-  - [ ] retirer conditions pour split_cmd_sp
-  - [ ] Do not del the ' and " for the step 2
+  - [x] change type_and_set for t_token
+  - [x] retirer conditions pour split_cmd_sp
+  - [x] Do not del the ' and " for the step 2
   - [ ] Error if var or match in redirection file_name
   - [ ] implement parenthesis
 

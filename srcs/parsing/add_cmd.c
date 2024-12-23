@@ -1,9 +1,11 @@
 #include "../../incs/minishell.h"
 
-void	add_cmd(t_cmdli **cmds_list, char *cmd, t_type *type)
+int	add_cmd(t_cmdli *cmdli, char *cmd)
 {
-	add_arg(cmds_list, cmd, type);
-	*type = CMD;
-	if (*cmds_list)
-		(*cmds_list)->cmd = (*cmds_list)->cmd_args[0];
+	int	ret;
+
+	ret = add_arg(cmdli, cmd);
+	if (cmdli)
+		cmdli->cmd = cmdli->cmd_args[0];
+	return (ret);
 }
