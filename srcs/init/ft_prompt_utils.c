@@ -84,12 +84,12 @@ void	none_git_prompt(char *prompt, const char **prompt_elem, char *cwd)
 	prompt[j] = 0;
 }
 
-char	*get_git_path(char *cwd, char *file)
+char	*check_git_path(char *cwd, char *file, int cwd_len)
 {
 	char			*ret;
 	unsigned int	i;
 
-	ret = malloc((ft_strlen(cwd) + 11) * sizeof(char));
+	ret = malloc((cwd_len + 11) * sizeof(char));
 	if (!ret)
 		return (NULL);
 	i = 0;
@@ -102,4 +102,26 @@ char	*get_git_path(char *cwd, char *file)
 		return (ret);
 	free(ret);
 	return (NULL);
+}
+
+char	*get_git_path(char *cwd, char *file)
+{
+	int		cwd_len;
+	char	*ret;
+
+	if (!cwd)
+		return (NULL);
+	cwd_len = ft_strlen(cwd);
+	ret = NULL;
+	while (1)
+	{
+		ret = check_git_path(cwd, file, cwd_len);
+		if (ret || !cwd_len)
+			break ;
+		while (cwd_len && cwd[cwd_len] != '/')
+			--cwd_len;
+		cwd[cwd_len] = '\0';
+	}
+	free(cwd);
+	return (ret);
 }

@@ -9,13 +9,13 @@
   - [x] change type_and_set for t_token
   - [x] retirer conditions pour split_cmd_sp
   - [x] Do not del the ' and " for the step 2
-  - [ ] Error if var or match in redirection file_name
   - [ ] implement parenthesis
 
 - [ ] Step 2 of parsing (Tristan) :
   - [ ] Get home if ~ in first char and followed by nothing or /
   - [ ] Implement \
   - [ ] Set tokens in cmdli (with $, * and without ' and ")
+  - [ ] Error if var or match in redirection multiple file_names
 
 - [ ] match
   - [ ] besoin de conditions pour:
@@ -25,4 +25,4 @@
 optional:
 - [ ] parsing for bonuses
 
-- [ ] get parent folder git branch for prompt line
+- [x] get parent folder git branch for prompt line
