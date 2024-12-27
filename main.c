@@ -20,7 +20,7 @@ void	execution(t_cmdli *cmdli, int status)
 		else
 			is_builtin(&cmdli_i, 0);
 		sig_mode(0);
-		// if (cmdli_i)
+		if (cmdli_i)
 			cmdli_i = cmdli_i->next;
 	}
 	while (wait(&status) != -1)

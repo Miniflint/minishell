@@ -13,7 +13,7 @@ int	store_tokens(t_cmdli *cmdli)
 		// 	|| cmdli->tok_cursor->type == RDIH || cmdli->tok_cursor->type == RDOA)
 		// 	rd = 1;
 		// else
-		// {	
+		// {
 			if (cmdli->tok_cursor->type == CMD)
 				ret = add_cmd(cmdli, cmdli->tok_cursor->token);
 			else if (cmdli->tok_cursor->type == ARG)
