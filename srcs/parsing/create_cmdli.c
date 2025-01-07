@@ -10,5 +10,7 @@ t_cmdli	*create_cmdli(void)
 	*ret = (t_cmdli){};
 	ret->fd_in = -1;
 	ret->fd_out = -1;
+	ret->create_fork = 0;
+	ret->exit_fork = 0;
 	return (ret);
 }

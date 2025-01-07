@@ -51,6 +51,8 @@ typedef struct s_shell
 	char				*read;
 	int					if_sig;
 	int					say;
+	int					parenthesis;
+	int					cmd_cmpt;
 }	t_shell;
 
 typedef enum e_type
@@ -88,6 +90,8 @@ typedef struct s_cmdli
 	char			**cmd_args;
 	int				*pipe_in;
 	int				*pipe_out;
+	int				create_fork;
+	int				exit_fork;
 	int				here_doc;
 	int				fd_in;
 	int				fd_out;

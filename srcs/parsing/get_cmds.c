@@ -16,12 +16,10 @@ void	interpret(t_cmdli **cmds_list, char **cmdline,
 		type_and_set(split_cmd(cmdline, i, '|'), cmds_list, type, 1);
 	else if ((*cmdline)[*i] == '&')
 		type_and_set(split_cmd(cmdline, i, '&'), cmds_list, type, 1);
-//	else if ((*cmdline)[*i] == '(')
-//		// todo, ajouter fonction pour open parenthese
-//		ft_printfd(1, "blablabla '(' %i\n", ++*i);
-//	else if ((*cmdline)[*i] == ')')
-//		// todo, ajouter fonction pour close parenthese
-//		ft_printfd(1, "blablabla ')' %i\n", ++*i);
+	else if ((*cmdline)[*i] == '(')
+		type_and_set(ft_substr((*cmdline), (++(*i)) - 1, 1), cmds_list, type, 1);
+	else if ((*cmdline)[*i] == ')')
+		type_and_set(ft_substr((*cmdline), (++(*i)) - 1, 1), cmds_list, type, 1);
 	else
 		type_and_set(split_cmd_sp(cmdline, i), cmds_list, type, 0);
 }
@@ -43,7 +41,8 @@ t_cmdli	*get_cmds(char **cmdline)
 		if (!cmds_list)
 			return (NULL);
 	}
-	if (type != CMD && type != ARG && type != RFILE && type != EMPTY)
+	if (ft_get_shell(NULL)->parenthesis ||
+		(type != CMD && type != ARG && type != RFILE && type != EMPTY))
 		return (error_cmdli_nl(&cmds_list));
 	return (cmdli_first(cmds_list));
 }

@@ -55,13 +55,15 @@ char	*split_cmd_sp(char **cmdline, unsigned int *i)
 	ret = NULL;
 	while ((*cmdline)[*i] && (*cmdline)[*i] != ' ' && (*cmdline)[*i]
 		!= '<' && (*cmdline)[*i] != '>' && (*cmdline)[*i]
-		!= '|' && (*cmdline)[*i] != '&')
+		!= '|' && (*cmdline)[*i] != '&' && (*cmdline)[*i] != '('
+		&& (*cmdline)[*i] != ')')
 	{
 		j = 0;
 		while ((*cmdline)[*i + j] && (*cmdline)[*i + j] != ' '
 			&& (*cmdline)[*i + j] != '<' && (*cmdline)[*i + j] != '>'
-			&& (*cmdline)[*i + j] != '|' && (*cmdline)[*i + j]
-			!= '&' && (*cmdline)[*i + j] != '\'' && (*cmdline)[*i + j]
+			&& (*cmdline)[*i + j] != '|' && (*cmdline)[*i + j] != '&'
+			&& (*cmdline)[*i + j] != '(' && (*cmdline)[*i + j] != ')'
+			&& (*cmdline)[*i + j] != '\'' && (*cmdline)[*i + j]
 			!= '"' && !(!j && !ret && ((*cmdline)[*i + j + 1] == '/'
 			|| (*cmdline)[*i + j + 1] == ' ' || !(*cmdline)[*i + j + 1])))
 			++j;

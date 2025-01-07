@@ -46,6 +46,8 @@ void	parsing(t_shell *shell, t_cmdli *cmdli, int status)
 {
 	if (shell->read[0])
 		add_history(shell->read);
+	shell->parenthesis = 0;
+	shell->cmd_cmpt = 0;
 	cmdli = get_cmds(&shell->read);
 	if (cmdli)
 		execution(cmdli, status);
