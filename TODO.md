@@ -10,6 +10,8 @@
   - [x] retirer conditions pour split_cmd_sp
   - [x] Do not del the ' and " for the step 2
   - [ ] implement parenthesis
+    - [ ] check that there is at least one command between the brackets
+    - [ ] check if the parenthesis is closed
 
 - [ ] Step 2 of parsing (Tristan) :
   - [ ] Get home if ~ in first char and followed by nothing or /
@@ -26,3 +28,7 @@ optional:
 - [ ] parsing for bonuses
 
 - [x] get parent folder git branch for prompt line
+
+Note :
+Comtpeur de commande reviens à 0 à chaque parenthese fermante comme ouvrante et s'incrémente à chaque commande, si !compteur et parenthèse fermante alors erreur de synthax.
+Compteur de parenthese s'incrémente avec ouvrante décrémente si fermante, si valeur négative erreur, si valeur vrai à la fin du prompt erreur.
