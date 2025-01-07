@@ -43,9 +43,9 @@ int	skip_add_path(char full_path[1024 + 1], char *d_name, char *base_path)
 	return (0);
 }
 
-void	rec_dir(DIR *dir_ptr, char **sep, int depth, char *base_path, const int max_depth, char **rtn)
+void	rec_dir(DIR *dir_ptr, char **sep, int depth, char *base_path, const int max_depth, char **rtn, int dir_or_file)
 {
-	char	full_path[1024 + 1];
+	char	full_path[4096 + 1];
 	DIR	*sub_dir;
 	s_dir	*idk;
 	char	*get_name;
@@ -59,22 +59,22 @@ void	rec_dir(DIR *dir_ptr, char **sep, int depth, char *base_path, const int max
 		get_name = NULL;
 		if (idk->d_type == DT_DIR)
 		{
-			if ((max_depth == -1 || depth < max_depth) && match(sep[depth], (char *)idk->d_name))
+			if ((max_depth == -1 || depth <= max_depth) && match(sep[depth], (char *)idk->d_name))
 			{
 				sub_dir = opendir(full_path);
 				if (!sub_dir)
 					return ;
-				if (max_depth == -1 || depth == max_depth)
+				if ((max_depth == -1 || depth == max_depth) && dir_or_file)
 					get_name = full_path;
-				rec_dir(sub_dir, sep, depth + 1, full_path, max_depth, rtn);
+				rec_dir(sub_dir, sep, depth + 1, full_path, max_depth, rtn, dir_or_file);
 				closedir(sub_dir);
 			}
 		}
-		if((max_depth == -1 || depth == max_depth) && match(sep[max_depth], (char *)idk->d_name))
+		else if((max_depth == -1 || depth == max_depth) && !dir_or_file && match(sep[max_depth], (char *)idk->d_name))
 			get_name = full_path;
 		if (get_name)
 		{
-			char *tmp = ft_strjoin(*rtn, full_path);
+			char *const	tmp = ft_strjoin(*rtn, full_path);
 			free(*rtn);
 			*rtn = ft_strjoin(tmp, " ");
 			free(tmp);
@@ -82,6 +82,10 @@ void	rec_dir(DIR *dir_ptr, char **sep, int depth, char *base_path, const int max
 	}
 }
 
+
+// TODO:
+// take sep as char * and add a split for /
+// implement rules in TODO.md
 int	check_open_dir(char *path, char **sep, int size)
 {
 	DIR	*dir_ptr;
@@ -92,7 +96,7 @@ int	check_open_dir(char *path, char **sep, int size)
 	dir_ptr = opendir(path);
 	if (!dir_ptr)
 		return (printf("could not open the base dir\n"));
-	rec_dir(dir_ptr, sep, 0, path, size, &str);
+	rec_dir(dir_ptr, sep, 0, path, size, &str, 0);
 	closedir(dir_ptr);
 	printf("%s\n", str);
 	return (0);
