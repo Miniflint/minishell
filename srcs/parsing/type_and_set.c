@@ -1,36 +1,24 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   type_and_set.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: hermesrolle <hermesrolle@student.42.fr>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/07 15:53:52 by hermesrolle       #+#    #+#             */
-/*   Updated: 2025/01/07 16:12:15 by hermesrolle      ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../incs/minishell.h"
 
-void	open_parenthesis(t_cmdli **cmds_list, t_shell *shell)
+void	open_parenthesis(t_cmdli **cmds_list, t_shell *shell, t_type *type)
 {
+	*type = OPEN_P;
 	++shell->parenthesis;
 	++(*cmds_list)->create_fork;
 }
 
-void	close_parenthesis(t_cmdli **cmds_list, t_shell *shell)
+void	close_parenthesis(t_cmdli **cmds_list, t_shell *shell, t_type *type)
 {
+	*type = CLOSE_P;
 	--shell->parenthesis;
 	++(*cmds_list)->exit_fork;
 }
 
 int	check_close_parenthesis(char *s, char *token, t_shell *shell, t_type type)
 {
-	if (ft_strcmp_int(s, token) && shell->parenthesis - 1 >= 0
+	return (ft_strcmp_int(s, token) && shell->parenthesis - 1 >= 0
 		&& shell->parenthesis == shell->cmd_cmpt
-		&& (type == CMD || type == ARG || type == RFILE))
-		return (1);
-	return (0);
+		&& (type == CMD || type == ARG || type == RFILE || type == CLOSE_P));
 }
 
 void	interpret_func(char *s, t_cmdli **cmds_list, t_type *type, int rd)
@@ -43,18 +31,18 @@ void	interpret_func(char *s, t_cmdli **cmds_list, t_type *type, int rd)
 		*type = RDO;
 	else if (ft_strcmp_int(s, ">>") && !rd)
 		*type = RDOA;
-	else if (ft_strcmp_int(s, "("))
-		open_parenthesis(cmds_list, ft_get_shell(NULL));
+	else if (ft_strcmp_int(s, "(") && (*type == EMPTY || *type == PIPE || *type == ANDOR || *type == OPEN_P))
+		open_parenthesis(cmds_list, ft_get_shell(NULL), type);
 	else if (check_close_parenthesis(s, ")", ft_get_shell(NULL), *type))
-		close_parenthesis(cmds_list, ft_get_shell(NULL));
+		close_parenthesis(cmds_list, ft_get_shell(NULL), type);
 	else if (ft_strcmp_int(s, "|")
-		&& (*type == CMD || *type == ARG || *type == RFILE))
+		&& (*type == CMD || *type == ARG || *type == RFILE || *type == CLOSE_P))
 		add_pipe(cmds_list, type);
 	else if (ft_strcmp_int(s, "||")
-		&& (*type == CMD || *type == ARG || *type == RFILE))
+		&& (*type == CMD || *type == ARG || *type == RFILE || *type == CLOSE_P))
 		add_andor(cmds_list, type, 2);
 	else if (ft_strcmp_int(s, "&&")
-		&& (*type == CMD || *type == ARG || *type == RFILE))
+		&& (*type == CMD || *type == ARG || *type == RFILE || *type == CLOSE_P))
 		add_andor(cmds_list, type, 1);
 	else
 		return (error_cmdli_interpret(cmds_list, s));
@@ -89,6 +77,8 @@ void	type_and_set(char *s, t_cmdli **cmds_list, t_type *type, int interpret)
 		interpret_func(s, cmds_list, type, rd);
 	else
 	{
+		if (*type == CLOSE_P)
+			return (error_cmdli_interpret_s(cmds_list, s));
 		set_type(ft_get_shell(NULL), type, rd);
 		if (*type == RDIH)
 			write_heredoc(cmds_list, s);

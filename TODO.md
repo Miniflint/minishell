@@ -1,4 +1,4 @@
-<<<<<<<<<IMPORTANT>>>>>>>>>>>
+<<<<<<<<<<<IMPORTANT>>>>>>>>>>>
 - [x] LEAK ON SHLVL IN SHELL->ENV["SHLVL"];
 
 - [ ] take care of CDPATH variable -> should be added if updated
@@ -12,7 +12,8 @@
   - [ ] implement parenthesis
     - [x] check that there is at least one command between the brackets
     - [x] check if the parenthesis is closed
-    - [ ] check that all elements of a command line are never divided by parentheses example: (echo) hello
+    - [x] check that all elements of a command line are never divided by parentheses example: (echo) hello
+    - [ ] execution with parenthesis
 
 - [ ] Step 2 of parsing (Tristan) :
   - [ ] Get home if ~ in first char and followed by nothing or /

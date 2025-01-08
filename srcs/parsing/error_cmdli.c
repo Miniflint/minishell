@@ -25,3 +25,12 @@ void	error_cmdli_interpret(t_cmdli **cmds_list, char *s)
 	g_errno = 258;
 	free(s);
 }
+
+void	error_cmdli_interpret_s(t_cmdli **cmds_list, char *s)
+{
+	free_cmdli(cmds_list);
+	ft_printfd(2, "#+wminishell#0: #/r"
+		"syntax error near unexpected token `#0%s#/r'#0\n", s);
+	g_errno = 258;
+	free(s);
+}

@@ -66,7 +66,9 @@ typedef enum e_type
 	RDO,
 	RDIH,
 	RDOA,
-	ANDOR
+	ANDOR,
+	OPEN_P,
+	CLOSE_P
 }			t_type;
 
 typedef struct s_unlist
@@ -115,6 +117,7 @@ void		free_file(t_file **files);
 t_cmdli		*error_cmdli_nl(t_cmdli **cmds_list);
 void		error_cmdli(t_cmdli **cmds_list, char *s);
 void		error_cmdli_interpret(t_cmdli **cmds_list, char *s);
+void		error_cmdli_interpret_s(t_cmdli **cmds_list, char *s);
 int			ft_strcmp_int(char *s1, char *s2);
 int			ft_strslen(char **s);
 int			files_len(t_file **files);
@@ -140,7 +143,7 @@ void		type_and_set(char *s, t_cmdli **cmds_list,
 t_cmdli		*get_cmds(char **cmdline);
 
 // Parsing step 2
-int		store_tokens(t_cmdli *cmdli);
+int			store_tokens(t_cmdli *cmdli);
 
 // List utils
 void		free_nodes(t_variable **list);

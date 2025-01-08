@@ -42,7 +42,7 @@ t_cmdli	*get_cmds(char **cmdline)
 			return (NULL);
 	}
 	if (ft_get_shell(NULL)->parenthesis ||
-		(type != CMD && type != ARG && type != RFILE && type != EMPTY))
+		(type != CMD && type != ARG && type != RFILE && type != EMPTY && type != CLOSE_P))
 		return (error_cmdli_nl(&cmds_list));
 	return (cmdli_first(cmds_list));
 }
