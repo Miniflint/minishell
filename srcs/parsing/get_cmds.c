@@ -1,5 +1,18 @@
 #include "../../incs/minishell.h"
 
+char	*get_one_char_str(char *str, unsigned int *i)
+{
+	char	*ret;
+
+	ret = malloc(2 * sizeof(char));
+	if (!ret)
+		return (NULL);
+	*ret = str[*i];
+	ret[1] = '\0';
+	++*i;
+	return (ret);
+}
+
 void	interpret(t_cmdli **cmds_list, char **cmdline,
 					t_type *type, unsigned int *i)
 {
@@ -17,9 +30,9 @@ void	interpret(t_cmdli **cmds_list, char **cmdline,
 	else if ((*cmdline)[*i] == '&')
 		type_and_set(split_cmd(cmdline, i, '&'), cmds_list, type, 1);
 	else if ((*cmdline)[*i] == '(')
-		type_and_set(ft_substr((*cmdline), (++(*i)) - 1, 1), cmds_list, type, 1);
+		type_and_set(get_one_char_str(*cmdline, i), cmds_list, type, 1);
 	else if ((*cmdline)[*i] == ')')
-		type_and_set(ft_substr((*cmdline), (++(*i)) - 1, 1), cmds_list, type, 1);
+		type_and_set(get_one_char_str(*cmdline, i), cmds_list, type, 1);
 	else
 		type_and_set(split_cmd_sp(cmdline, i), cmds_list, type, 0);
 }
