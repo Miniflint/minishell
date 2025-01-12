@@ -6,7 +6,7 @@
 /*   By: hermesrolle <hermesrolle@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 07:03:54 by hermesrolle       #+#    #+#             */
-/*   Updated: 2025/01/12 07:16:56 by hermesrolle      ###   ########.fr       */
+/*   Updated: 2025/01/12 07:43:00 by hermesrolle      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,24 +100,23 @@ char	*split_cmd_sp_add_func(char **cmdline, char *ret, unsigned int *i)
 // 	return (ret);
 // }
 
-char	*split_cmd_sp(char **cmdline, unsigned int *i)
+char	*split_cmd_sp(char **cmdline, unsigned int *i) //Il faut gerer les '(' et ')'
 {
 	unsigned int	j;
 	char			*ret;
 
 	ret = NULL;
-	while ((*cmdline)[*i] && (*cmdline)[*i] != ' ' && (*cmdline)[*i]
-		!= '<' && (*cmdline)[*i] != '>' && (*cmdline)[*i]
-		!= '|' && (*cmdline)[*i] != '&')
+	while ((*cmdline)[*i] && (*cmdline)[*i] != ' '
+		&& (*cmdline)[*i] != '<' && (*cmdline)[*i] != '>'
+		&& (*cmdline)[*i] != '|' && (*cmdline)[*i] != '&'
+		&& (*cmdline)[*i] != '(' && (*cmdline)[*i] != ')')
 	{
 		j = 0;
-		while ((*cmdline)[*i + j] && (*cmdline)[*i + j] != '$'
-			&& (*cmdline)[*i + j] != ' ' && (*cmdline)[*i + j]
-			!= '<' && (*cmdline)[*i + j] != '>' && (*cmdline)[*i + j]
-			!= '|' && (*cmdline)[*i + j] != '&' && (*cmdline)[*i + j]
-			!= '\'' && (*cmdline)[*i + j] != '"' && !(!j && !ret
-			&& (*cmdline)[*i + j] == '~' && ((*cmdline)[*i + j + 1] == '/'
-			|| (*cmdline)[*i + j + 1] == ' ' || !(*cmdline)[*i + j + 1])))
+		while ((*cmdline)[*i + j] && (*cmdline)[*i + j] != ' '
+			&& (*cmdline)[*i + j] != '<' && (*cmdline)[*i + j] != '>'
+			&& (*cmdline)[*i + j] != '|' && (*cmdline)[*i + j] != '&'
+			&& (*cmdline)[*i + j] != '\'' && (*cmdline)[*i + j] != '"'
+			&& (*cmdline)[*i + j] != '(' && (*cmdline)[*i + j] != ')')
 			++j;
 		if (j)
 			ret = split_cmd_sp_ret(cmdline, ret, i, j);

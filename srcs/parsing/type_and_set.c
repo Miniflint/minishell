@@ -61,7 +61,7 @@ void	set_type(t_shell *shell, t_type *type, int rd)
 }
 
 void	type_and_set(char *s, t_cmdli **cmds_list, t_type *type, int interpret)
-{ //Ici récupérer les éléments dans tokens au lieux de set direct le cmdli
+{
 	int	rd;
 
 	if (!s)
