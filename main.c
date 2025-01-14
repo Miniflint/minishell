@@ -12,13 +12,17 @@ void	execution(t_cmdli *cmdli, int status)
 	while (cmdli_i)
 	{
 		sig_mode(1);
+		//t_unlist *tok = cmdli_i->tokens;
+		//while (tok)
+		//{
+		//	printf("%s - %d\n", tok->token, tok->type);
+		//	if (tok)
+		//		tok = tok->next;
+		//}
 		store_tokens(cmdli_i);
 		if (!cmdli_i->cmd)
 			no_cmd(&cmdli_i);
-		else if (cmdli_i->pipe_in || cmdli_i->pipe_out)
-			is_builtin(&cmdli_i, 1);
-		else
-			is_builtin(&cmdli_i, 0);
+		is_builtin(&cmdli_i, (cmdli_i->pipe_in || cmdli_i->pipe_out));
 		sig_mode(0);
 		if (cmdli_i)
 			cmdli_i = cmdli_i->next;

@@ -19,6 +19,9 @@ int	ft_strcmp(const char *s1, char *s2);
 char	*ft_strjoin(char *s1, char *s2);
 
 
+// char interpret qui se desinterpret si la valeur est la meme que celle d'entree:
+// interpret = "
+// desinterpret si un autre char "
 int match(char *s1, char *s2)
 {
 	if ((*s1 == '*' && !*(s1 + 1)) || (!*s1 && !*s2))

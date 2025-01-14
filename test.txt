@@ -1,0 +1,14 @@
+Dockerfile
+Makefile
+TODO.md
+incs
+libft
+main.c
+main.o
+minishell
+printfd
+rm_headers.py
+srcs
+t.txt
+test.txt
+tmp

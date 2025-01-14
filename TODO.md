@@ -1,4 +1,5 @@
 <<<<<<<<<<<IMPORTANT>>>>>>>>>>>
+- [ ] ft_str_get_env envoie le faux env
 - [x] LEAK ON SHLVL IN SHELL->ENV["SHLVL"];
 
 - [ ] take care of CDPATH variable -> should be added if updated
@@ -28,5 +29,4 @@
 
 optional:
 - [ ] parsing for bonuses
-
 - [x] get parent folder git branch for prompt line
