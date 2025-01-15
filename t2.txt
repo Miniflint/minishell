@@ -1,5 +1,4 @@
 -rw-r--r--  1 herolle 2024_lausanne    516 Jan 15 14:40 Dockerfile
--rw-r--r--  1 herolle 2024_lausanne    665 Jan 15 14:40 .gitignore
 -rw-r--r--  1 herolle 2024_lausanne   2112 Jan 15 16:45 main.c
 -rw-r--r--  1 herolle 2024_lausanne   4512 Jan 15 17:13 main.o
 -rw-r--r--  1 herolle 2024_lausanne   4788 Jan 15 15:03 Makefile
@@ -7,25 +6,7 @@
 -rw-r--r--  1 herolle 2024_lausanne    918 Jan 15 14:40 rm_headers.py
 -rw-r--r--  1 herolle 2024_lausanne    109 Jan 15 14:40 test.txt
 -rw-r--r--  1 herolle 2024_lausanne   1154 Jan 15 14:40 TODO.md
--rw-r--r--  1 herolle 2024_lausanne      0 Jan 15 17:15 t.txt
-
-.git:
-total 52
-drwxr-xr-x  8 herolle 2024_lausanne  4096 Jan 15 15:05 .
-drwxr-xr-x  8 herolle 2024_lausanne  4096 Jan 15 17:15 ..
-drwxr-xr-x  2 herolle 2024_lausanne     6 Jan 15 14:40 branches
--rw-r--r--  1 herolle 2024_lausanne   298 Jan 15 15:05 config
--rw-r--r--  1 herolle 2024_lausanne    73 Jan 15 14:40 description
--rw-r--r--  1 herolle 2024_lausanne    92 Jan 15 15:03 FETCH_HEAD
--rw-r--r--  1 herolle 2024_lausanne    23 Jan 15 14:40 HEAD
-drwxr-xr-x  2 herolle 2024_lausanne  4096 Jan 15 14:40 hooks
--rw-r--r--  1 herolle 2024_lausanne 13897 Jan 15 15:03 index
-drwxr-xr-x  2 herolle 2024_lausanne    21 Jan 15 14:40 info
-drwxr-xr-x  3 herolle 2024_lausanne    30 Jan 15 14:40 logs
-drwxr-xr-x 13 herolle 2024_lausanne   120 Jan 15 15:03 objects
--rw-r--r--  1 herolle 2024_lausanne    41 Jan 15 15:03 ORIG_HEAD
--rw-r--r--  1 herolle 2024_lausanne   114 Jan 15 14:40 packed-refs
-drwxr-xr-x  5 herolle 2024_lausanne    46 Jan 15 14:40 refs
+-rw-r--r--  1 herolle 2024_lausanne  10310 Jan 15 17:15 t.txt
 
 incs:
 total 12

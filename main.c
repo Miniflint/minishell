@@ -2,20 +2,41 @@
 #include "printfd/HEADER/ft_printfd.h"
 #include <stdio.h>
 
-int g_errno;
+int	g_errno; //Ne peux pas rester comme ca 
+
+void	pass_until_char(char **s, char c)
+{
+	++*s;
+	while (**s && **s != c)
+		++*s;
+	if (**s)
+		++*s;
+}
+
+int	check_wildcard(char *s)
+{
+	while (*s)
+	{
+		if (*s == '*')
+			return (1);
+		else if (*s == '\'')
+			pass_until_char(&s, '\'');
+		else if (*s == '"')
+			pass_until_char(&s, '"');
+		++s;
+	}
+	return (0);
+}
 
 void	expend(t_cmdli *cmdli)
 {
-	t_unlist	*tok = cmdli->tokens;
+	cmdli->tok_cursor = cmdli->tokens;
 
-	while (tok)
+	while (cmdli->tok_cursor)
 	{
-		if (tok->token)
-		{
-			tok->token = check_open_dir(".", tok->token);
-		}
-		if (tok)
-			tok = tok->next;
+		if (check_wildcard(cmdli->tok_cursor->token))
+			check_open_dir(".", cmdli->tok_cursor->token, cmdli);
+		cmdli->tok_cursor = cmdli->tok_cursor->next;
 	}
 }
 

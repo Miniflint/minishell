@@ -4,6 +4,7 @@
 #include <unistd.h>
 
 #include "minishell.h"
+#include "../printfd/HEADER/ft_printfd.h"
 /*
  struct dirent {
     ino_t	d_ino; //file number of this entry
@@ -13,7 +14,7 @@
     char	d_name[256 + 1]; //name of the file
  };
 */
-typedef struct dirent s_dir;
+typedef struct dirent t_dir;
 // char	*ft_strcat(char *dest, char *src);
 // void	ft_strcpy(char *dst, char *src);
 // int	ft_strcmp(const char *s1, char *s2);
@@ -52,13 +53,37 @@ int	skip_add_path(char full_path[1024 + 1], char *d_name, char *base_path, int d
 	return (0);
 }
 
-void	rec_dir(DIR *dir_ptr, char **sep, int depth, char *base_path, const int max_depth, char **rtn, int dir_or_file)
+void	add_token_unlist(t_cmdli *cmdli, char *name, char *is_first)
 {
-	char	full_path[4096 + 1];
+	if (name)
+	{
+		if (*is_first)
+		{
+			*is_first = 0;
+			free(cmdli->tok_cursor->token);
+			cmdli->tok_cursor->token = ft_strdup(name);
+			if (!cmdli->tok_cursor->token)
+			{
+				ft_printfd(2, "Erreur de malloc non gerer dans match.c ligne 94\n");
+				return ;
+			}
+		}
+		else
+		{
+			if (cmdli->tok_cursor->type == ARG || cmdli->tok_cursor->type == CMD)
+				new_unlist(cmdli, ft_strdup(name), ARG);
+			else
+				ft_printfd(2, "Erreur ambigous redirect non gerer dans match.c ligne 103\n");
+		}
+	}
+}
+
+void	rec_dir(DIR *dir_ptr, char **sep, int depth, char *base_path, const int max_depth, t_cmdli *cmdli, int dir_or_file, char *is_first)
+{
+	char	full_path[PATH_MAX];
 	DIR	*sub_dir;
-	s_dir	*idk;
+	t_dir	*idk;
 	char	*get_name;
-	char	*tmp;
 
 	while ((idk = readdir(dir_ptr)) != NULL)
 	{
@@ -75,20 +100,13 @@ void	rec_dir(DIR *dir_ptr, char **sep, int depth, char *base_path, const int max
 				if (!sub_dir)
 					return ;
 				get_name = full_path;
-				rec_dir(sub_dir, sep, depth + 1, full_path, max_depth, rtn, dir_or_file);
+				rec_dir(sub_dir, sep, depth + 1, full_path, max_depth, cmdli, dir_or_file, is_first);
 				closedir(sub_dir);
 			}
 		}
 		else if((max_depth == -1 || depth == max_depth) && !dir_or_file && match(sep[max_depth], (char *)idk->d_name))
 			get_name = full_path;
-		if (get_name)
-		{
-			tmp = ft_strjoin(*rtn, full_path);
-			if (tmp && *rtn && *rtn[0])
-				free(*rtn);
-			*rtn = ft_strjoin(tmp, " ");
-			free(tmp);
-		}
+		add_token_unlist(cmdli, get_name, is_first);
 	}
 }
 
@@ -96,36 +114,33 @@ void	rec_dir(DIR *dir_ptr, char **sep, int depth, char *base_path, const int max
 // TODO:
 // take sep as char * and add a split for /
 // implement rules in TODO.md
-char	*check_open_dir(char *path, char *separators)
+void	check_open_dir(char *path, char *separators, t_cmdli *cmdli)
 {
 	DIR	*dir_ptr;
-	char	*str;
 	char	**sep;
 	int		i;
+	char	is_first;
 
 	if (!path)
-		return (NULL);
+		return ;
 	dir_ptr = opendir(path);
-	str = ft_strdup("");
 	if (!dir_ptr)
 	{
-		printf("could not open the base dir\n");
-		return (NULL);
+		ft_printfd(2, "could not open the base dir, non gerer dans match.c ligne 131\n");
+		return ;
 	}
 	sep = ft_split(separators, '/');
 	i = 0;
 	while (sep[i])
 		i++;
 	printf("%d\n", i);
-	rec_dir(dir_ptr, sep, 0, path, i - 1, &str, 0);
+	is_first = 1;
+	rec_dir(dir_ptr, sep, 0, path, -1, cmdli, 0, &is_first);
 	i = 0;
 	while (sep[i])
 		free(sep[i++]);
 	free(sep[i]);
 	closedir(dir_ptr);
-	if (!str || !str[0])
-		return (separators);
-	return (str);
 }
 
 // int main(int argc, char **argv)
