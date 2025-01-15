@@ -32,7 +32,8 @@ SRCS	=	main.c                                   srcs/images/image_10_12.c       
 			srcs/execution/no_cmd.c                  srcs/init/init_shell.c                   srcs/parsing_step_2/store_tokens.c	\
 			srcs/execution/set_redirection.c         srcs/init/list_utils.c                   srcs/secure/error.c	\
 			srcs/fun/ft_say.c                        srcs/parsing/add_andor.c                 srcs/secure/free_tab_null.c	\
-			srcs/fun/print_minishell.c               srcs/parsing/add_arg.c                   srcs/signals/sig_handler.c
+			srcs/fun/print_minishell.c               srcs/parsing/add_arg.c                   srcs/signals/sig_handler.c	\
+			srcs/match.c                             srcs/util.c
 
 INC_FLAGS := -Ilibs/libft/incs -Iincs
 LIBS := -Llibft -lft -lreadline

@@ -4,6 +4,21 @@
 
 int g_errno;
 
+void	expend(t_cmdli *cmdli)
+{
+	t_unlist	*tok = cmdli->tokens;
+
+	while (tok)
+	{
+		if (tok->token)
+		{
+			tok->token = check_open_dir(".", tok->token);
+		}
+		if (tok)
+			tok = tok->next;
+	}
+}
+
 void	execution(t_cmdli *cmdli, int status)
 {
 	t_cmdli	*cmdli_i;
@@ -12,13 +27,7 @@ void	execution(t_cmdli *cmdli, int status)
 	while (cmdli_i)
 	{
 		sig_mode(1);
-		//t_unlist *tok = cmdli_i->tokens;
-		//while (tok)
-		//{
-		//	printf("%s - %d\n", tok->token, tok->type);
-		//	if (tok)
-		//		tok = tok->next;
-		//}
+		expend(cmdli_i);
 		store_tokens(cmdli_i);
 		if (!cmdli_i->cmd)
 			no_cmd(&cmdli_i);
@@ -70,7 +79,7 @@ int	main(int ac, char **av, char **env)
 	ft_get_shell(&shell);
 	init_shell(&shell, env);
 	ft_say_check(ac, &shell);
-	print_minishell();
+	//print_minishell();
 	term_handler();
 	signal(SIGQUIT, SIG_IGN);
 	sig_mode(1);

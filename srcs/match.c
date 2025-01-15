@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#include "minishell.h"
 /*
  struct dirent {
     ino_t	d_ino; //file number of this entry
@@ -13,11 +14,10 @@
  };
 */
 typedef struct dirent s_dir;
-char	*ft_strcat(char *dest, char *src);
-void	ft_strcpy(char *dst, char *src);
-int	ft_strcmp(const char *s1, char *s2);
-char	*ft_strjoin(char *s1, char *s2);
-
+// char	*ft_strcat(char *dest, char *src);
+// void	ft_strcpy(char *dst, char *src);
+// int	ft_strcmp(const char *s1, char *s2);
+// char	*ft_strjoin(char *s1, char *s2);
 
 // char interpret qui se desinterpret si la valeur est la meme que celle d'entree:
 // interpret = "
@@ -43,12 +43,12 @@ int	skip_add_path(char full_path[1024 + 1], char *d_name, char *base_path, int d
 		return (1);
 	if (depth)
 	{
-		ft_strcpy(full_path, base_path);
-		ft_strcat(full_path, "/");
-		ft_strcat(full_path, d_name);
+		f_ft_strcpy(full_path, base_path);
+		f_ft_strcat(full_path, "/");
+		f_ft_strcat(full_path, d_name);
 	}
 	else
-		ft_strcpy(full_path, d_name);
+		f_ft_strcpy(full_path, d_name);
 	return (0);
 }
 
@@ -74,8 +74,7 @@ void	rec_dir(DIR *dir_ptr, char **sep, int depth, char *base_path, const int max
 				sub_dir = opendir(full_path);
 				if (!sub_dir)
 					return ;
-				if ((max_depth == -1 || depth == max_depth))
-					get_name = full_path;
+				get_name = full_path;
 				rec_dir(sub_dir, sep, depth + 1, full_path, max_depth, rtn, dir_or_file);
 				closedir(sub_dir);
 			}
@@ -97,33 +96,46 @@ void	rec_dir(DIR *dir_ptr, char **sep, int depth, char *base_path, const int max
 // TODO:
 // take sep as char * and add a split for /
 // implement rules in TODO.md
-char	*check_open_dir(char *path, char **sep, int size)
+char	*check_open_dir(char *path, char *separators)
 {
 	DIR	*dir_ptr;
 	char	*str;
+	char	**sep;
+	int		i;
 
 	if (!path)
 		return (NULL);
 	dir_ptr = opendir(path);
-	str = ft_strjoin("", "");
+	str = ft_strdup("");
 	if (!dir_ptr)
 	{
 		printf("could not open the base dir\n");
 		return (NULL);
 	}
-	rec_dir(dir_ptr, sep, 0, path, size, &str, 0);
+	sep = ft_split(separators, '/');
+	i = 0;
+	while (sep[i])
+		i++;
+	printf("%d\n", i);
+	rec_dir(dir_ptr, sep, 0, path, i - 1, &str, 0);
+	i = 0;
+	while (sep[i])
+		free(sep[i++]);
+	free(sep[i]);
 	closedir(dir_ptr);
+	if (!str || !str[0])
+		return (separators);
 	return (str);
 }
 
-int main(int argc, char **argv)
-{
-	char *str;
+// int main(int argc, char **argv)
+// {
+// 	char *str;
 
-	if (argc < 3)
-		return (1);
-	str = check_open_dir(argv[1], argv + 2, argc - 3);
-	printf("%s\n", str);
-	return (0);
-}
+// 	if (argc < 3)
+// 		return (1);
+// 	str = check_open_dir(argv[1], argv + 2, argc - 3);
+// 	printf("%s\n", str);
+// 	return (0);
+// }
 

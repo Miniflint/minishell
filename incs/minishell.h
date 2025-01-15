@@ -106,6 +106,11 @@ typedef struct s_cmdli
 	struct s_cmdli	*next;
 }					t_cmdli;
 
+char	*check_open_dir(char *path, char *separators);
+void	f_ft_strcpy(char *dst, char *src);
+char	*f_ft_strcat(char *dest, char *src);
+
+
 // Parsing
 void		free_tab(char **ss);
 int			new_unlist(t_cmdli *cmdli, char *s, t_type type);
