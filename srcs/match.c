@@ -1,5 +1,6 @@
 #include "minishell.h"
 #include "../printfd/HEADER/ft_printfd.h"
+
 /*
  struct dirent {
     ino_t	d_ino; //file number of this entry
@@ -109,10 +110,10 @@ void	rec_dir(t_match info, int depth, t_cmdli *cmdli, int *is_first)
 	sub_info = info;
 	while ((idk = readdir(info.dir_ptr)) != NULL)
 	{
-		if (skip_add_path(info.full_path, idk->d_name, info.base_path, depth))
-				continue ;
 		if (idk->d_name[0] == '.' && info.sep[0][0] != '.')
 			continue ;
+		if (skip_add_path(info.full_path, idk->d_name, info.base_path, depth))
+				continue ;
 		get_name = NULL;
 		if (idk->d_type == DT_DIR)
 		{
