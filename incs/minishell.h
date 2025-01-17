@@ -12,6 +12,7 @@
 # include <stdlib.h>
 # include <signal.h>
 # include <limits.h>
+# include <dirent.h>
 # include <sys/wait.h>
 # include "../libft/libft.h"
 
@@ -106,7 +107,22 @@ typedef struct s_cmdli
 	struct s_cmdli	*next;
 }					t_cmdli;
 
+typedef struct dirent t_dir;
+
+typedef struct s_match_info
+{
+	DIR		*dir_ptr;
+	char	**sep;
+	char	*base_path;
+	char	full_path[PATH_MAX];
+	int		infinite;
+	int		true_max_depth;
+	int		dir_or_file;
+	int		is_hidden;
+}	t_match;
+
 // Match
+void	rec_dir(t_match info, int depth, t_cmdli *cmdli, int *is_first);
 void	check_open_dir(char *path, char *separators, t_cmdli *cmdli);
 void	f_ft_strcpy(char *dst, char *src);
 char	*f_ft_strcat(char *dest, char *src);
