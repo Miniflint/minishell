@@ -28,10 +28,32 @@ int	check_wildcard(char *s)
 	return (0);
 }
 
+void	expend_var(t_cmdli *cmdli)
+{
+	char	*ret;
+
+	if (*cmdli->tok_cursor->token == '~' && (!cmdli->tok_cursor->token[1] || cmdli->tok_cursor->token[1] == '/'))
+	{
+		ret = ft_strjoin(ft_get_var("HOME"), cmdli->tok_cursor->token + 1);
+		if (!ret)
+		{
+			ft_printfd(2, "Erreur de malloc non gerer dans main.c ligne 40\n");
+			return ;
+		}
+		free(cmdli->tok_cursor->token);
+		cmdli->tok_cursor->token = ret;
+	}
+}
+
 void	expend(t_cmdli *cmdli)
 {
 	cmdli->tok_cursor = cmdli->tokens;
-
+	while (cmdli->tok_cursor)
+	{
+		expend_var(cmdli);
+		cmdli->tok_cursor = cmdli->tok_cursor->next;
+	}
+	cmdli->tok_cursor = cmdli->tokens;
 	while (cmdli->tok_cursor)
 	{
 		if (check_wildcard(cmdli->tok_cursor->token))

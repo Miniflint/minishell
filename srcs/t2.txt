@@ -1,1 +1,0 @@
-images/image_10_12.c images/image_13_15.c images/image_16_18.c images/image_19_20.c images/image_1_2.c images/image_3_4.c images/image_5_6.c images/image_7_9.c init/ft_get_env.c init/ft_get_export.c init/ft_get_shell.c init/ft_get_str_env.c init/ft_get_var.c init/ft_prompt.c init/ft_prompt_utils.c init/init_env.c init/init_export.c init/init_shell.c init/list_utils.c
