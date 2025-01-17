@@ -118,7 +118,6 @@ typedef struct s_match_info
 	int		infinite;
 	int		true_max_depth;
 	int		dir_or_file;
-	int		is_hidden;
 }	t_match;
 
 // Match
