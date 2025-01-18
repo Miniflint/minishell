@@ -129,7 +129,7 @@ void	rec_dir(t_match info, int depth, t_cmdli *cmdli, int *is_first)
 					return ;
 				}
 				sub_info.base_path = info.full_path;
-				if (depth <= info.true_max_depth)
+				if ((!info.true_max_depth || depth <= info.true_max_depth))
 					get_name = info.full_path;
 				add_token_unlist(cmdli, get_name, is_first, info.dir_or_file);
 				rec_dir(sub_info, depth + 1, cmdli, is_first);
@@ -236,7 +236,6 @@ void	check_open_dir(char *separators, t_cmdli *cmdli)
 		info.base_path = ft_strjoin("/", path);
 	else
 		info.base_path = ft_strdup(path);
-	printf("%s\n", info.base_path);
 	i = 0;
 	while (info.sep[i])
 		i++;
