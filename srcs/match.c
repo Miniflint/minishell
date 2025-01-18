@@ -119,8 +119,8 @@ void	rec_dir(t_match info, int depth, t_cmdli *cmdli, int *is_first)
 		get_name = NULL;
 		if (idk->d_type == DT_DIR)
 		{
-			if ((info.infinite == -1 || depth <= info.true_max_depth) &&
-				match(info.sep[get_depth(depth, info.true_max_depth)], (char *)idk->d_name))
+			if ((info.infinite == -1 || depth <= info.max_depth_dir) &&
+				match(info.sep[get_depth(depth, info.max_depth_dir)], (char *)idk->d_name))
 			{
 				sub_info.dir_ptr = opendir(info.full_path);
 				if (!sub_info.dir_ptr)
@@ -129,15 +129,15 @@ void	rec_dir(t_match info, int depth, t_cmdli *cmdli, int *is_first)
 					return ;
 				}
 				sub_info.base_path = info.full_path;
-				if ((!info.true_max_depth || depth <= info.true_max_depth))
+				if ((!info.max_depth_dir || depth <= info.max_depth_dir))
 					get_name = info.full_path;
 				add_token_unlist(cmdli, get_name, is_first, info.dir_or_file);
 				rec_dir(sub_info, depth + 1, cmdli, is_first);
 				closedir(sub_info.dir_ptr);
 			}
 		}
-		else if((info.infinite == -1 || depth == info.true_max_depth) &&
-			!info.dir_or_file && match(info.sep[info.true_max_depth], (char *)idk->d_name))
+		else if((info.infinite == -1 || depth == info.max_depth_file) &&
+			!info.dir_or_file && match(info.sep[info.max_depth_file], (char *)idk->d_name))
 		{
 			get_name = info.full_path;
 			add_token_unlist(cmdli, get_name, is_first, info.dir_or_file);
@@ -175,8 +175,6 @@ void parse_param_recdir(char *s, t_match *info, int *is_first)
 	}
 	if (info->infinite >= 1 && slash > 0)
 		info->infinite = -1;
-	else
-		info->infinite = 0;
 }
 
 char	*get_path_sep(t_match *info, char *separators)
@@ -239,14 +237,18 @@ void	check_open_dir(char *separators, t_cmdli *cmdli)
 	i = 0;
 	while (info.sep[i])
 		i++;
-	info.true_max_depth = i - 1;
+	info.max_depth_file = i - 1;
+	info.max_depth_dir = i - 1;
+	if (i > 1)
+		info.max_depth_dir = i - 2;
+	printf("sep_file:%s - sep_dir:%s\n", info.sep[info.max_depth_file], info.sep[info.max_depth_dir]);
 	info.dir_ptr = opendir(info.base_path);
 	if (!info.dir_ptr)
 	{
 		ft_printfd(2, "could not open the base dir, non gerer dans match.c ligne 131\n");
 		return ;
 	}
-	printf("a_p:%d - d_o_f:%d - inf:%d - t_m_d:%d\n", info.absolute_path, info.dir_or_file, info.infinite, info.true_max_depth);
+	printf("a_p:%d - d_o_f:%d - inf:%d - t_m_d:%d\n", info.absolute_path, info.dir_or_file, info.infinite, info.max_depth_file);
 	rec_dir(info, 0, cmdli, &param);
 	i = 0;
 	while (info.sep[i])
