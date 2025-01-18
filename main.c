@@ -2,7 +2,7 @@
 #include "printfd/HEADER/ft_printfd.h"
 #include <stdio.h>
 
-int	g_errno; //Ne peux pas rester comme ca 
+int	g_errno;
 
 void	pass_until_char(char **s, char c)
 {
