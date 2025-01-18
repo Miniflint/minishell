@@ -36,8 +36,9 @@ int match(char *s1, char *s2)
 
 int	skip_add_path(char full_path[PATH_MAX], char *d_name, char *base_path, int depth)
 {
-	if (!ft_strcmp(d_name, ".") || !ft_strcmp(d_name, ".."))
-		return (1);
+	if (!ft_strcmp(base_path, "."))
+		if (!ft_strcmp(d_name, ".") || !ft_strcmp(d_name, ".."))
+			return (1);
 	if (depth || (!depth && ft_strcmp(base_path, ".")))
 	{
 		f_ft_strcpy(full_path, base_path);
@@ -128,7 +129,8 @@ void	rec_dir(t_match info, int depth, t_cmdli *cmdli, int *is_first)
 					return ;
 				}
 				sub_info.base_path = info.full_path;
-				get_name = info.full_path;
+				if (depth <= info.true_max_depth)
+					get_name = info.full_path;
 				add_token_unlist(cmdli, get_name, is_first, info.dir_or_file);
 				rec_dir(sub_info, depth + 1, cmdli, is_first);
 				closedir(sub_info.dir_ptr);
@@ -146,19 +148,22 @@ void	rec_dir(t_match info, int depth, t_cmdli *cmdli, int *is_first)
 
 // wiar == Wildcard In A Row
 // ews == Ends With Slash
-void parse_param_recdir(char *s, int *wiar, int *ews, int *is_first)
+void parse_param_recdir(char *s, t_match *info, int *is_first)
 {
 	int			slash;
 	char const	*tmp = s;
 
 	slash = 0;
 	*is_first = 1;
-	*wiar = 0;
-	*ews = 0;
+	info->dir_or_file = 0;
+	info->infinite = 0;
+	info->absolute_path = 0;
+	if (*s == '/')
+		info->absolute_path = 1;
 	while (*s)
 	{
 		if (*s == '*' && *(s + 1) && *(s + 1) == '*')
-			*wiar = 1;
+			info->infinite = 1;
 		s++;
 	}
 	while (*(tmp++))
@@ -166,12 +171,12 @@ void parse_param_recdir(char *s, int *wiar, int *ews, int *is_first)
 		if (*tmp == '/')
 			slash++;
 		if (*tmp && !*(tmp + 1) && *tmp == '/')
-			*ews = 1;
+			info->dir_or_file = 1;
 	}
-	if (*wiar >= 1 && slash > 0)
-		*wiar = -1;
+	if (info->infinite >= 1 && slash > 0)
+		info->infinite = -1;
 	else
-		*wiar = 0;
+		info->infinite = 0;
 }
 
 char	*get_path_sep(t_match *info, char *separators)
@@ -223,21 +228,26 @@ void	check_open_dir(char *separators, t_cmdli *cmdli)
 	char	*path;
 	int		i;
 
+	parse_param_recdir(separators, &info, &param);
 	path = get_path_sep(&info, separators);
 	if (!path)
 		path = ft_strdup(".");
+	if (info.absolute_path)
+		info.base_path = ft_strjoin("/", path);
+	else
+		info.base_path = ft_strdup(path);
+	printf("%s\n", info.base_path);
 	i = 0;
 	while (info.sep[i])
 		i++;
 	info.true_max_depth = i - 1;
-	info.dir_ptr = opendir(path);
+	info.dir_ptr = opendir(info.base_path);
 	if (!info.dir_ptr)
 	{
 		ft_printfd(2, "could not open the base dir, non gerer dans match.c ligne 131\n");
 		return ;
 	}
-	info.base_path = path;
-	parse_param_recdir(separators, &info.infinite, &info.dir_or_file, &param);
+	printf("a_p:%d - d_o_f:%d - inf:%d - t_m_d:%d\n", info.absolute_path, info.dir_or_file, info.infinite, info.true_max_depth);
 	rec_dir(info, 0, cmdli, &param);
 	i = 0;
 	while (info.sep[i])
@@ -245,6 +255,7 @@ void	check_open_dir(char *separators, t_cmdli *cmdli)
 	free(info.sep_base_ptr);
 	if (path)
 		free(path);
+	free(info.base_path);
 	closedir(info.dir_ptr);
 }
 

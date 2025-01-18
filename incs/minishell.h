@@ -119,6 +119,7 @@ typedef struct s_match_info
 	int		infinite;
 	int		true_max_depth;
 	int		dir_or_file;
+	int		absolute_path;
 }	t_match;
 
 // Match
