@@ -35,7 +35,7 @@ void	expend(t_cmdli *cmdli)
 	while (cmdli->tok_cursor)
 	{
 		if (check_wildcard(cmdli->tok_cursor->token))
-			check_open_dir(".", cmdli->tok_cursor->token, cmdli);
+			check_open_dir(cmdli->tok_cursor->token, cmdli);
 		cmdli->tok_cursor = cmdli->tok_cursor->next;
 	}
 }

@@ -1,1 +1,9 @@
-.git/branches .git incs libft printfd/HEADER printfd srcs/builtins srcs tmp
+[?2004h[1;37mMinChatLà 🐈 [0;31m[ [3m/home/trgoel/Documents/cursus/minishell[0;31m ][0m[0;32m on [ [1;34mmaster[0;32m ][0m
+[1m% 👉 [0m[?2004l
+[1;37mMinChatLà 🐈 [0;31m[ [3m/home/trgoel/Documents/cursus/minishell[0;31m ][0m[0;32m on [ [1;34mmaster[0;32m ][0m
+[1m% 👉 [0m[?2004h[?2004l
+[1;37mMinChatLà 🐈 [0;31m[ [3m/home/trgoel/Documents/cursus/minishell[0;31m ][0m[0;32m on [ [1;34mmaster[0;32m ][0m
+[1m% 👉 [0m[?2004h[?2004l
+[1;37mMinChatLà 🐈 [0;31m[ [3m/home/trgoel/Documents/cursus/minishell[0;31m ][0m[0;32m on [ [1;34mmaster[0;32m ][0m
+[1m% 👉 [0m[?2004h[?2004l
+Good bye ! See you soon ;)

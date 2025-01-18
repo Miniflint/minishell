@@ -113,6 +113,7 @@ typedef struct s_match_info
 {
 	DIR		*dir_ptr;
 	char	**sep;
+	char	**sep_base_ptr;
 	char	*base_path;
 	char	full_path[PATH_MAX];
 	int		infinite;
@@ -122,7 +123,7 @@ typedef struct s_match_info
 
 // Match
 void	rec_dir(t_match info, int depth, t_cmdli *cmdli, int *is_first);
-void	check_open_dir(char *path, char *separators, t_cmdli *cmdli);
+void	check_open_dir(char *separators, t_cmdli *cmdli);
 void	f_ft_strcpy(char *dst, char *src);
 char	*f_ft_strcat(char *dest, char *src);
 

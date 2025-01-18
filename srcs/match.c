@@ -38,10 +38,11 @@ int	skip_add_path(char full_path[PATH_MAX], char *d_name, char *base_path, int d
 {
 	if (!ft_strcmp(d_name, ".") || !ft_strcmp(d_name, ".."))
 		return (1);
-	if (depth)
+	if (depth || (!depth && ft_strcmp(base_path, ".")))
 	{
 		f_ft_strcpy(full_path, base_path);
-		f_ft_strcat(full_path, "/");
+		if (depth)
+			f_ft_strcat(full_path, "/");
 		f_ft_strcat(full_path, d_name);
 	}
 	else
@@ -110,10 +111,10 @@ void	rec_dir(t_match info, int depth, t_cmdli *cmdli, int *is_first)
 	sub_info = info;
 	while ((idk = readdir(info.dir_ptr)) != NULL)
 	{
+		if (skip_add_path(info.full_path, idk->d_name, info.base_path, depth))
+			continue ;
 		if (idk->d_name[0] == '.' && info.sep[0][0] != '.')
 			continue ;
-		if (skip_add_path(info.full_path, idk->d_name, info.base_path, depth))
-				continue ;
 		get_name = NULL;
 		if (idk->d_type == DT_DIR)
 		{
@@ -121,9 +122,12 @@ void	rec_dir(t_match info, int depth, t_cmdli *cmdli, int *is_first)
 				match(info.sep[get_depth(depth, info.true_max_depth)], (char *)idk->d_name))
 			{
 				sub_info.dir_ptr = opendir(info.full_path);
-				sub_info.base_path = info.full_path;
 				if (!sub_info.dir_ptr)
+				{
+					ft_printfd(2, "could not open the base dir, non gerer dans match.c ligne 123\n");
 					return ;
+				}
+				sub_info.base_path = info.full_path;
 				get_name = info.full_path;
 				add_token_unlist(cmdli, get_name, is_first, info.dir_or_file);
 				rec_dir(sub_info, depth + 1, cmdli, is_first);
@@ -170,35 +174,77 @@ void parse_param_recdir(char *s, int *wiar, int *ews, int *is_first)
 		*wiar = 0;
 }
 
+char	*get_path_sep(t_match *info, char *separators)
+{
+	int		i;
+	int		j;
+	char	*tmp;
+	char	*path;
+
+	info->sep = ft_split(separators, '/');
+	info->sep_base_ptr = info->sep;
+	i = 0;
+	path = NULL;
+	tmp = NULL;
+	while (info->sep[i])
+	{
+		j = 0;
+		while (info->sep[i][j])
+		{
+			if (info->sep[i][j] == '*')
+			{
+				info->sep += i;
+				return (path);
+			}
+			j++;
+		}
+		if (info->sep[i][j] != '*')
+		{
+			tmp = ft_strjoin(path, info->sep[i]);
+			if (tmp)
+				free(path);
+			path = ft_strjoin(tmp, "/");
+			free(tmp);
+			free(info->sep[i]);
+			info->sep[i] = NULL;
+		}
+		i++;
+	}
+	return (path);
+}
+
 // TODO:
 // take sep as char * and add a split for /
 // implement rules in TODO.md
-void	check_open_dir(char *path, char *separators, t_cmdli *cmdli)
+void	check_open_dir(char *separators, t_cmdli *cmdli)
 {
 	t_match	info;
+	int		param;
+	char	*path;
 	int		i;
-	int	param;
 
+	path = get_path_sep(&info, separators);
 	if (!path)
-		return ;
+		path = ft_strdup(".");
+	i = 0;
+	while (info.sep[i])
+		i++;
+	info.true_max_depth = i - 1;
 	info.dir_ptr = opendir(path);
 	if (!info.dir_ptr)
 	{
 		ft_printfd(2, "could not open the base dir, non gerer dans match.c ligne 131\n");
 		return ;
 	}
-	info.sep = ft_split(separators, '/');
-	i = 0;
-	while (info.sep[i])
-		i++;
-	info.true_max_depth = i - 1;
 	info.base_path = path;
 	parse_param_recdir(separators, &info.infinite, &info.dir_or_file, &param);
 	rec_dir(info, 0, cmdli, &param);
 	i = 0;
 	while (info.sep[i])
 		free(info.sep[i++]);
-	free(info.sep);
+	free(info.sep_base_ptr);
+	if (path)
+		free(path);
 	closedir(info.dir_ptr);
 }
 
