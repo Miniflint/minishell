@@ -250,7 +250,7 @@ void	check_open_dir(char *separators, t_cmdli *cmdli)
 	info.max_depth_dir = i - 1;
 	if (i > 1)
 		info.max_depth_dir = i - 2;
-	if ((info.infinite == -1 && info.max_depth_dir == 0 && info.max_depth_file == 1) || info.infinite != -1)
+	if ((info.infinite == -1 && info.max_depth_dir == 0) || info.infinite != -1)
 	{
 		info.dir_ptr = opendir(info.base_path);
 		if (!info.dir_ptr)
