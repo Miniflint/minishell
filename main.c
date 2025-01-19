@@ -17,12 +17,12 @@ int	check_wildcard(char *s)
 {
 	while (*s)
 	{
-		if (*s == '*')
-			return (1);
-		else if (*s == '\'')
+		if (*s == '\'')
 			pass_until_char(&s, '\'');
 		else if (*s == '"')
 			pass_until_char(&s, '"');
+		if (*s == '*')
+			return (1);
 		++s;
 	}
 	return (0);
@@ -31,7 +31,9 @@ int	check_wildcard(char *s)
 void	expend_var(t_cmdli *cmdli)
 {
 	char	*ret;
+	int		i;
 
+	ret = NULL;
 	if (*cmdli->tok_cursor->token == '~' && (!cmdli->tok_cursor->token[1] || cmdli->tok_cursor->token[1] == '/'))
 	{
 		ret = ft_strjoin(ft_get_var("HOME"), cmdli->tok_cursor->token + 1);
@@ -42,6 +44,20 @@ void	expend_var(t_cmdli *cmdli)
 		}
 		free(cmdli->tok_cursor->token);
 		cmdli->tok_cursor->token = ret;
+		cmdli->tok_cursor = cmdli->tok_cursor->next;
+	}
+	while (cmdli->tok_cursor)
+	{
+		i = 0;
+		while (cmdli->tok_cursor->token[i])
+		{
+			if (cmdli->tok_cursor->token[i] == '"')
+			{
+				if (expend_dquote_var(&ret, cmdli->tok_cursor->token + i + 1))
+					return ;
+			}
+		}
+		cmdli->tok_cursor = cmdli->tok_cursor->next;
 	}
 }
 
