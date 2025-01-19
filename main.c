@@ -28,6 +28,13 @@ int	check_wildcard(char *s)
 	return (0);
 }
 
+int	expend_dquote_var(char **ret, char *str)
+{
+	if (ret)
+		ft_printfd(1, "I'm in expend_dquote_var with %s\n", str);
+	return (0);
+}
+
 void	expend_var(t_cmdli *cmdli)
 {
 	char	*ret;
@@ -56,6 +63,7 @@ void	expend_var(t_cmdli *cmdli)
 				if (expend_dquote_var(&ret, cmdli->tok_cursor->token + i + 1))
 					return ;
 			}
+			++i;
 		}
 		cmdli->tok_cursor = cmdli->tok_cursor->next;
 	}
@@ -63,12 +71,12 @@ void	expend_var(t_cmdli *cmdli)
 
 void	expend(t_cmdli *cmdli)
 {
-	cmdli->tok_cursor = cmdli->tokens;
-	while (cmdli->tok_cursor)
-	{
-		expend_var(cmdli);
-		cmdli->tok_cursor = cmdli->tok_cursor->next;
-	}
+	// cmdli->tok_cursor = cmdli->tokens;
+	// while (cmdli->tok_cursor)
+	// {
+	// 	expend_var(cmdli);
+	// 	cmdli->tok_cursor = cmdli->tok_cursor->next;
+	// }
 	cmdli->tok_cursor = cmdli->tokens;
 	while (cmdli->tok_cursor)
 	{
