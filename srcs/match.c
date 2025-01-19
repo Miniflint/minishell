@@ -21,16 +21,23 @@
 // char interpret qui se desinterpret si la valeur est la meme que celle d'entree:
 // interpret = "
 // desinterpret si un autre char "
-int match(char *s1, char *s2)
+int match(char *s1, char *s2, char quote)
 {
-	if ((*s1 == '*' && !*(s1 + 1)) || (!*s1 && !*s2))
+	if (quote && *s1 == quote)
+	{
+		quote = 0;
+		s1++;
+	}
+	else if (!quote && (*s1 == '\'' || *s1 == '\"'))
+		quote = *(s1++);
+	if (!quote && ((*s1 == '*' && !*(s1 + 1)) || (!*s1 && !*s2)))
 		return (1);
 	else if (!*s2)
 		return (0);
-	else if (*s1 == '*' && (match(s1, s2 + 1) || match(s1 + 1, s2)))
+	else if (!quote && *s1 == '*' && (match(s1, s2 + 1, quote) || match(s1 + 1, s2, quote)))
 		return (1);
 	else if (*s1 == *s2)
-		return (match(s1 + 1, s2 + 1));
+		return (match(s1 + 1, s2 + 1, quote));
 	return (0);
 }
 
@@ -120,7 +127,7 @@ void	rec_dir(t_match info, int depth, t_cmdli *cmdli, int *is_first)
 		if (idk->d_type == DT_DIR)
 		{
 			if ((info.infinite == -1 || depth <= info.max_depth_dir) &&
-				match(info.sep[get_depth(depth, info.max_depth_dir)], (char *)idk->d_name))
+				match(info.sep[get_depth(depth, info.max_depth_dir)], (char *)idk->d_name, 0))
 			{
 				sub_info.dir_ptr = opendir(info.full_path);
 				if (!sub_info.dir_ptr)
@@ -137,7 +144,7 @@ void	rec_dir(t_match info, int depth, t_cmdli *cmdli, int *is_first)
 			}
 		}
 		else if((info.infinite == -1 || depth == info.max_depth_file) &&
-			!info.dir_or_file && match(info.sep[info.max_depth_file], (char *)idk->d_name))
+			!info.dir_or_file && match(info.sep[info.max_depth_file], (char *)idk->d_name, 0))
 		{
 			get_name = info.full_path;
 			add_token_unlist(cmdli, get_name, is_first, info.dir_or_file);
@@ -204,8 +211,9 @@ char	*get_path_sep(t_match *info, char *separators)
 		if (info->sep[i][j] != '*')
 		{
 			tmp = ft_strjoin(path, info->sep[i]);
-			if (tmp)
-				free(path);
+			if (!tmp)
+				return (NULL);
+			free(path);
 			path = ft_strjoin(tmp, "/");
 			free(tmp);
 			free(info->sep[i]);
@@ -234,6 +242,7 @@ void	check_open_dir(char *separators, t_cmdli *cmdli)
 		info.base_path = ft_strjoin("/", path);
 	else
 		info.base_path = ft_strdup(path);
+	free(path);
 	i = 0;
 	while (info.sep[i])
 		i++;
@@ -241,21 +250,22 @@ void	check_open_dir(char *separators, t_cmdli *cmdli)
 	info.max_depth_dir = i - 1;
 	if (i > 1)
 		info.max_depth_dir = i - 2;
-	info.dir_ptr = opendir(info.base_path);
-	if (!info.dir_ptr)
+	if (info.infinite == -1 && info.max_depth_dir == 0 && info.max_depth_file == 1)
 	{
-		ft_printfd(2, "could not open the base dir, non gerer dans match.c ligne 131\n");
-		return ;
+		info.dir_ptr = opendir(info.base_path);
+		if (!info.dir_ptr)
+		{
+			ft_printfd(2, "could not open the base dir, non gerer dans match.c ligne 131\n");
+			return ;
+		}
+		rec_dir(info, 0, cmdli, &param);
+		closedir(info.dir_ptr);
 	}
-	rec_dir(info, 0, cmdli, &param);
 	i = 0;
 	while (info.sep[i])
 		free(info.sep[i++]);
 	free(info.sep_base_ptr);
-	if (path)
-		free(path);
 	free(info.base_path);
-	closedir(info.dir_ptr);
 }
 
 // int main(int argc, char **argv)

@@ -17,12 +17,12 @@ int	check_wildcard(char *s)
 {
 	while (*s)
 	{
-		if (*s == '*')
-			return (1);
-		else if (*s == '\'')
+		if (*s == '\'')
 			pass_until_char(&s, '\'');
 		else if (*s == '"')
 			pass_until_char(&s, '"');
+		if (*s == '*')
+			return (1);
 		++s;
 	}
 	return (0);
