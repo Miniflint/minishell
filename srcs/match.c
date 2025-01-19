@@ -136,14 +136,14 @@ void	rec_dir(t_match info, int depth, t_cmdli *cmdli, int *is_first)
 					return ;
 				}
 				sub_info.base_path = info.full_path;
-				if ((!info.max_depth_dir || depth <= info.max_depth_dir))
+				if (info.infinite == -1 && depth >= info.max_depth_file)
 					get_name = info.full_path;
 				add_token_unlist(cmdli, get_name, is_first, info.dir_or_file);
 				rec_dir(sub_info, depth + 1, cmdli, is_first);
 				closedir(sub_info.dir_ptr);
 			}
 		}
-		else if((info.infinite == -1 || depth == info.max_depth_file) &&
+		else if((info.infinite == -1 || depth == info.max_depth_file + 1) &&
 			!info.dir_or_file && match(info.sep[info.max_depth_file], (char *)idk->d_name, 0))
 		{
 			get_name = info.full_path;
