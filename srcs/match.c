@@ -143,7 +143,7 @@ void	rec_dir(t_match info, int depth, t_cmdli *cmdli, int *is_first)
 				closedir(sub_info.dir_ptr);
 			}
 		}
-		else if((info.infinite == -1 || depth == info.max_depth_file + 1) &&
+		else if((info.infinite == -1 || depth == info.max_depth_file) &&
 			!info.dir_or_file && match(info.sep[info.max_depth_file], (char *)idk->d_name, 0))
 		{
 			get_name = info.full_path;
@@ -250,7 +250,7 @@ void	check_open_dir(char *separators, t_cmdli *cmdli)
 	info.max_depth_dir = i - 1;
 	if (i > 1)
 		info.max_depth_dir = i - 2;
-	if (info.infinite == -1 && info.max_depth_dir == 0 && info.max_depth_file == 1)
+	if ((info.infinite == -1 && info.max_depth_dir == 0 && info.max_depth_file == 1) || info.infinite != -1)
 	{
 		info.dir_ptr = opendir(info.base_path);
 		if (!info.dir_ptr)
