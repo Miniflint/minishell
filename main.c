@@ -2,7 +2,7 @@
 #include "printfd/HEADER/ft_printfd.h"
 #include <stdio.h>
 
-int	g_errno; //Ne peux pas rester comme ca 
+int	g_errno;
 
 void	pass_until_char(char **s, char c)
 {
@@ -73,7 +73,7 @@ void	expend(t_cmdli *cmdli)
 	while (cmdli->tok_cursor)
 	{
 		if (check_wildcard(cmdli->tok_cursor->token))
-			check_open_dir(".", cmdli->tok_cursor->token, cmdli);
+			check_open_dir(cmdli->tok_cursor->token, cmdli);
 		cmdli->tok_cursor = cmdli->tok_cursor->next;
 	}
 }

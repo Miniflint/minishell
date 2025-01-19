@@ -2,7 +2,6 @@
 - [ ] ft_str_get_env envoie le faux env
 - [x] LEAK ON SHLVL IN SHELL->ENV["SHLVL"];
 
-- [ ] take care of CDPATH variable -> should be added if updated
 
 - [ ] parse tokens unlist
 
@@ -18,15 +17,23 @@
 
 - [ ] Step 2 of parsing (Tristan) :
   - [ ] Get home if ~ in first char and followed by nothing or /
-  - [ ] Implement \
   - [ ] Set tokens in cmdli (with $, * and without ' and ")
   - [ ] Error if var or match in redirection multiple file_names
 
-- [ ] match
-  - [ ] besoin de conditions pour:
-    - [ ] que des directory: (ends with /)
-    - [ ] recursif a travers les dossiers: (double * + /)
+- [x] match
+  - [ ] PRENDRE EN COMPTE LES QUOTES
+  - [x] besoin de conditions pour:
+    - [x] que des directory: (ends with /)
+    - [x] Recursif
+    - [x] fonctionne avec absolute and relative path
+    - [x] recursif a travers les dossiers: (double * + /)
+
 
 optional:
 - [ ] parsing for bonuses
 - [x] get parent folder git branch for prompt line
+- [ ] take care of CDPATH variable -> should be added if updated
+- [ ] Implement \
+
+
+DONE:

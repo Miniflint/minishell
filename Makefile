@@ -64,7 +64,7 @@ all:	$(NAME)
 
 %.o: %.c
 	@printf "Compiling %-100s \r" $<
-	@$(CC) -I$(INC_MINISHELL)  $(CFLAGS) -c $< -o $@
+	@$(CC) -I$(INC_MINISHELL) $(CFLAGS) -c $< -o $@
 
 $(NAME)	: $(OBJS)
 	@echo "$(BLUE)Making libft and bonuses...                      $(NONE)"
