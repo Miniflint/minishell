@@ -37,17 +37,15 @@ void	if_rec_dir(t_cmdli *cmdli, t_p_match *p, t_match info, char **get_name)
 	t_match	sub_info;
 
 	sub_info = info;
-	if ((info.infinite == -1 || p->depth <= info.max_depth_dir)
-		&& match(info.sep[get_depth(p->depth, info.max_depth_dir)],
+	if ((info.infinite == -1 || p->depth <= info.max_depth_file)
+		&& match(info.sep[get_depth(p->depth, info.max_depth_file)],
 			info.d_name, 0))
 	{
 		sub_info.dir_ptr = opendir(info.full_path);
 		if (!sub_info.dir_ptr)
 			return ;
 		sub_info.base_path = info.full_path;
-		if ((info.infinite == -1 && p->depth >= info.max_depth_file)
-			|| (info.infinite != -1 && p->depth <= info.max_depth_file))
-			*get_name = info.full_path;
+		*get_name = info.full_path;
 		add_tok_unl(cmdli, *get_name, p->is_first, info.dir_or_file);
 		rec_dir(sub_info, p->depth + 1, cmdli, p->is_first);
 		closedir(sub_info.dir_ptr);
@@ -67,7 +65,8 @@ void	rec_dir(t_match info, int depth, t_cmdli *cmdli, int *is_first)
 			break ;
 		if (skip_add_path(info.full_path, idk->d_name, info.base_path, depth))
 			continue ;
-		if (idk->d_name[0] == '.' && info.sep[0][0] != '.')
+		if ((info.full_path[0] == '.' && info.sep[0][0] != '.')
+			|| (info.sep[0][0] == '.' && info.full_path[0] != '.'))
 			continue ;
 		info.d_name = (char *)idk->d_name;
 		get_name = NULL;
