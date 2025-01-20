@@ -136,7 +136,8 @@ void	rec_dir(t_match info, int depth, t_cmdli *cmdli, int *is_first)
 					return ;
 				}
 				sub_info.base_path = info.full_path;
-				if (info.infinite == -1 && depth >= info.max_depth_file)
+				if ((info.infinite == -1 && depth >= info.max_depth_file) ||
+					(info.infinite != -1 && depth <= info.max_depth_file))
 					get_name = info.full_path;
 				add_token_unlist(cmdli, get_name, is_first, info.dir_or_file);
 				rec_dir(sub_info, depth + 1, cmdli, is_first);
@@ -152,9 +153,6 @@ void	rec_dir(t_match info, int depth, t_cmdli *cmdli, int *is_first)
 	}
 }
 
-
-// wiar == Wildcard In A Row
-// ews == Ends With Slash
 void parse_param_recdir(char *s, t_match *info, int *is_first)
 {
 	int			slash;
@@ -184,18 +182,36 @@ void parse_param_recdir(char *s, t_match *info, int *is_first)
 		info->infinite = -1;
 }
 
+char	*join_path_free(t_match *info, char *path, int i)
+{
+	char	*tmp;
+	char	*new_path;
+
+	tmp = NULL;
+	new_path = NULL;
+	tmp = ft_strjoin(path, info->sep[i]);
+	if (!tmp)
+		return (NULL);
+	free(path);
+	new_path = ft_strjoin(tmp, "/");
+	if (!new_path)
+		return (NULL);
+	free(tmp);
+	free(info->sep[i]);
+	info->sep[i] = NULL;
+	return (new_path);
+}
+
 char	*get_path_sep(t_match *info, char *separators)
 {
 	int		i;
 	int		j;
-	char	*tmp;
 	char	*path;
 
 	info->sep = ft_split(separators, '/');
 	info->sep_base_ptr = info->sep;
 	i = 0;
 	path = NULL;
-	tmp = NULL;
 	while (info->sep[i])
 	{
 		j = 0;
@@ -209,16 +225,7 @@ char	*get_path_sep(t_match *info, char *separators)
 			j++;
 		}
 		if (info->sep[i][j] != '*')
-		{
-			tmp = ft_strjoin(path, info->sep[i]);
-			if (!tmp)
-				return (NULL);
-			free(path);
-			path = ft_strjoin(tmp, "/");
-			free(tmp);
-			free(info->sep[i]);
-			info->sep[i] = NULL;
-		}
+			path = join_path_free(info, path, i);
 		i++;
 	}
 	return (path);
@@ -250,7 +257,8 @@ void	check_open_dir(char *separators, t_cmdli *cmdli)
 	info.max_depth_dir = i - 1;
 	if (i > 1)
 		info.max_depth_dir = i - 2;
-	if ((info.infinite == -1 && info.max_depth_dir == 0) || info.infinite != -1)
+	printf("%d - %d - %d\n", info.infinite, info.max_depth_dir, info.dir_or_file);
+	if (info.infinite != -1 || (info.infinite == -1 && info.max_depth_dir == 0))
 	{
 		info.dir_ptr = opendir(info.base_path);
 		if (!info.dir_ptr)
