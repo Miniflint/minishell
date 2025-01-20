@@ -1,5 +1,4 @@
 #include "minishell.h"
-#include "../printfd/HEADER/ft_printfd.h"
 
 /*
  struct dirent {
@@ -12,16 +11,7 @@
 */
 // typedef struct dirent t_dir;
 
-
-// char	*ft_strcat(char *dest, char *src);
-// void	ft_strcpy(char *dst, char *src);
-// int	ft_strcmp(const char *s1, char *s2);
-// char	*ft_strjoin(char *s1, char *s2);
-
-// char interpret qui se desinterpret si la valeur est la meme que celle d'entree:
-// interpret = "
-// desinterpret si un autre char "
-int match(char *s1, char *s2, char quote)
+int	match(char *s1, char *s2, char quote)
 {
 	if (quote && *s1 == quote)
 	{
@@ -34,172 +24,62 @@ int match(char *s1, char *s2, char quote)
 		return (1);
 	else if (!*s2)
 		return (0);
-	else if (!quote && *s1 == '*' && (match(s1, s2 + 1, quote) || match(s1 + 1, s2, quote)))
+	else if (!quote && *s1 == '*' && (match(s1, s2 + 1, quote)
+			|| match(s1 + 1, s2, quote)))
 		return (1);
 	else if (*s1 == *s2)
 		return (match(s1 + 1, s2 + 1, quote));
 	return (0);
 }
 
-int	skip_add_path(char full_path[PATH_MAX], char *d_name, char *base_path, int depth)
+void	if_rec_dir(t_cmdli *cmdli, int *param[2], t_match info, char **get_name)
 {
-	if (!ft_strcmp(base_path, "."))
-		if (!ft_strcmp(d_name, ".") || !ft_strcmp(d_name, ".."))
-			return (1);
-	if (depth || (!depth && ft_strcmp(base_path, ".")))
+	t_match	sub_info;
+
+	sub_info = info;
+	if ((info.infinite == -1 || (*param)[1] <= info.max_depth_dir)
+		&& match(info.sep[get_depth((*param)[1], info.max_depth_dir)],
+		info.d_name, 0))
 	{
-		f_ft_strcpy(full_path, base_path);
-		if (depth)
-			f_ft_strcat(full_path, "/");
-		f_ft_strcat(full_path, d_name);
+		sub_info.dir_ptr = opendir(info.full_path);
+		if (!sub_info.dir_ptr)
+			return ;
+		sub_info.base_path = info.full_path;
+		if ((info.infinite == -1 && (*param)[1] >= info.max_depth_file) ||
+			(info.infinite != -1 && (*param)[1] <= info.max_depth_file))
+			*get_name = info.full_path;
+		add_tok_unl(cmdli, *get_name, param[0], info.dir_or_file);
+		rec_dir(sub_info, (*param)[1] + 1, cmdli, param[0]);
+		closedir(sub_info.dir_ptr);
 	}
-	else
-		f_ft_strcpy(full_path, d_name);
-	return (0);
-}
-
-char *dup_file_name(char *name, int dir_or_file)
-{
-	char	*ret;
-	int		i;
-
-	ret = malloc((ft_strlen(name) + 1 + dir_or_file) * sizeof(char));
-	if (!ret)
-		return (NULL);
-	i = 0;
-	while (name[i])
-	{
-		ret[i] = name[i];
-		++i;
-	}
-	if (dir_or_file)
-		ret[i++] = '/';
-	ret[i] = '\0';
-	return (ret);
-}
-
-void	add_token_unlist(t_cmdli *cmdli, char *name, int *is_first, int dir_or_file)
-{
-	if (name)
-	{
-		if (*is_first)
-		{
-			*is_first = 0;
-			free(cmdli->tok_cursor->token);
-			cmdli->tok_cursor->token = dup_file_name(name, dir_or_file);
-			if (!cmdli->tok_cursor->token)
-			{
-				ft_printfd(2, "Erreur de malloc non gerer dans match.c ligne 94\n");
-				return ;
-			}
-		}
-		else
-		{
-			if (cmdli->tok_cursor->type == ARG || cmdli->tok_cursor->type == CMD)
-				new_unlist(cmdli, dup_file_name(name, dir_or_file), ARG);
-			else
-				ft_printfd(2, "Erreur ambigous redirect non gerer dans match.c ligne 103\n");
-		}
-	}
-}
-
-int	get_depth(int depth, int max_depth)
-{
-	if (depth > max_depth)
-		return (max_depth);
-	return (depth);
 }
 
 void	rec_dir(t_match info, int depth, t_cmdli *cmdli, int *is_first)
 {
-	t_match	sub_info;
 	t_dir	*idk;
 	char	*get_name;
+	int		*param[2];
 
-	sub_info = info;
-	while ((idk = readdir(info.dir_ptr)) != NULL)
+	while (1)
 	{
+		idk = readdir(info.dir_ptr);
+		if (!idk)
+			break ;
 		if (skip_add_path(info.full_path, idk->d_name, info.base_path, depth))
 			continue ;
 		if (idk->d_name[0] == '.' && info.sep[0][0] != '.')
 			continue ;
+		info.d_name = (char *)idk->d_name;
 		get_name = NULL;
+		param[0] = is_first;
+		(*param)[1] = depth;
 		if (idk->d_type == DT_DIR)
-		{
-			if ((info.infinite == -1 || depth <= info.max_depth_dir) &&
-				match(info.sep[get_depth(depth, info.max_depth_dir)], (char *)idk->d_name, 0))
-			{
-				sub_info.dir_ptr = opendir(info.full_path);
-				if (!sub_info.dir_ptr)
-				{
-					ft_printfd(2, "could not open the base dir, non gerer dans match.c ligne 123\n");
-					return ;
-				}
-				sub_info.base_path = info.full_path;
-				if ((info.infinite == -1 && depth >= info.max_depth_file) ||
-					(info.infinite != -1 && depth <= info.max_depth_file))
-					get_name = info.full_path;
-				add_token_unlist(cmdli, get_name, is_first, info.dir_or_file);
-				rec_dir(sub_info, depth + 1, cmdli, is_first);
-				closedir(sub_info.dir_ptr);
-			}
-		}
-		else if((info.infinite == -1 || depth == info.max_depth_file) &&
-			!info.dir_or_file && match(info.sep[info.max_depth_file], (char *)idk->d_name, 0))
-		{
-			get_name = info.full_path;
-			add_token_unlist(cmdli, get_name, is_first, info.dir_or_file);
-		}
+			if_rec_dir(cmdli, param, info, &get_name);
+		else if ((info.infinite == -1 || depth == info.max_depth_file)
+			&& !info.dir_or_file
+			&& match(info.sep[info.max_depth_file], info.d_name, 0))
+			add_tok_unl(cmdli, info.full_path, is_first, info.dir_or_file);
 	}
-}
-
-void parse_param_recdir(char *s, t_match *info, int *is_first)
-{
-	int			slash;
-	char const	*tmp = s;
-
-	slash = 0;
-	*is_first = 1;
-	info->dir_or_file = 0;
-	info->infinite = 0;
-	info->absolute_path = 0;
-	if (*s == '/')
-		info->absolute_path = 1;
-	while (*s)
-	{
-		if (*s == '*' && *(s + 1) && *(s + 1) == '*')
-			info->infinite = 1;
-		s++;
-	}
-	while (*(tmp++))
-	{
-		if (*tmp == '/')
-			slash++;
-		if (*tmp && !*(tmp + 1) && *tmp == '/')
-			info->dir_or_file = 1;
-	}
-	if (info->infinite >= 1 && slash > 0)
-		info->infinite = -1;
-}
-
-char	*join_path_free(t_match *info, char *path, int i)
-{
-	char	*tmp;
-	char	*new_path;
-
-	tmp = NULL;
-	new_path = NULL;
-	tmp = ft_strjoin(path, info->sep[i]);
-	if (!tmp)
-		return (NULL);
-	free(path);
-	new_path = ft_strjoin(tmp, "/");
-	if (!new_path)
-		return (NULL);
-	free(tmp);
-	free(info->sep[i]);
-	info->sep[i] = NULL;
-	return (new_path);
 }
 
 char	*get_path_sep(t_match *info, char *separators)
@@ -231,39 +111,20 @@ char	*get_path_sep(t_match *info, char *separators)
 	return (path);
 }
 
-// TODO:
-// take sep as char * and add a split for /
-// implement rules in TODO.md
 void	check_open_dir(char *separators, t_cmdli *cmdli)
 {
 	t_match	info;
 	int		param;
-	char	*path;
 	int		i;
 
 	parse_param_recdir(separators, &info, &param);
-	path = get_path_sep(&info, separators);
-	if (!path)
-		path = ft_strdup(".");
-	if (info.absolute_path)
-		info.base_path = ft_strjoin("/", path);
-	else
-		info.base_path = ft_strdup(path);
-	free(path);
-	i = 0;
-	while (info.sep[i])
-		i++;
-	info.max_depth_file = i - 1;
-	info.max_depth_dir = i - 1;
-	if (i > 1)
-		info.max_depth_dir = i - 2;
-	printf("%d - %d - %d\n", info.infinite, info.max_depth_dir, info.dir_or_file);
+	assign_info_base_path(&info, separators);
 	if (info.infinite != -1 || (info.infinite == -1 && info.max_depth_dir == 0))
 	{
 		info.dir_ptr = opendir(info.base_path);
 		if (!info.dir_ptr)
 		{
-			ft_printfd(2, "could not open the base dir, non gerer dans match.c ligne 131\n");
+			ft_printfd(2, "could not open the base dir, match.c ligne 131\n");
 			return ;
 		}
 		rec_dir(info, 0, cmdli, &param);
@@ -275,15 +136,3 @@ void	check_open_dir(char *separators, t_cmdli *cmdli)
 	free(info.sep_base_ptr);
 	free(info.base_path);
 }
-
-// int main(int argc, char **argv)
-// {
-// 	char *str;
-
-// 	if (argc < 3)
-// 		return (1);
-// 	str = check_open_dir(argv[1], argv + 2, argc - 3);
-// 	printf("%s\n", str);
-// 	return (0);
-// }
-

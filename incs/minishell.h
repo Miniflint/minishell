@@ -15,6 +15,8 @@
 # include <dirent.h>
 # include <sys/wait.h>
 # include "../libft/libft.h"
+#include "../printfd/HEADER/ft_printfd.h"
+
 
 // Readline
 # include <readline/readline.h>
@@ -115,6 +117,7 @@ typedef struct s_match_info
 	char	**sep;
 	char	**sep_base_ptr;
 	char	*base_path;
+	char	*d_name;
 	char	full_path[PATH_MAX];
 	int		infinite;
 	int		max_depth_file;
@@ -124,10 +127,22 @@ typedef struct s_match_info
 }	t_match;
 
 // Match
+int		match(char *s1, char *s2, char quote);
 void	rec_dir(t_match info, int depth, t_cmdli *cmdli, int *is_first);
+void	if_rec_dir(t_cmdli *cmdli, int *param[2], t_match info, char **get_name);
 void	check_open_dir(char *separators, t_cmdli *cmdli);
-void	f_ft_strcpy(char *dst, char *src);
-char	*f_ft_strcat(char *dest, char *src);
+char	*get_path_sep(t_match *info, char *separators);
+
+// match utils.c
+void	assign_info_base_path(t_match *info, char *separators);
+int		get_depth(int depth, int max_depth);
+int		skip_add_path(char f_p[PATH_MAX], char *d_name, char *base_path, int depth);
+char	*dup_file_name(char *name, int dir_or_file);
+void	add_tok_unl(t_cmdli *cmdli, char *name, int *is_first, int dir_or_file);
+void	parse_param_recdir(char *s, t_match *info, int *is_first);
+char	*join_path_free(t_match *info, char *path, int i);
+
+
 
 // Parsing
 void		free_tab(char **ss);
