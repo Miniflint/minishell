@@ -32,33 +32,33 @@ int	match(char *s1, char *s2, char quote)
 	return (0);
 }
 
-void	if_rec_dir(t_cmdli *cmdli, int *param[2], t_match info, char **get_name)
+void	if_rec_dir(t_cmdli *cmdli, t_p_match *p, t_match info, char **get_name)
 {
 	t_match	sub_info;
 
 	sub_info = info;
-	if ((info.infinite == -1 || (*param)[1] <= info.max_depth_dir)
-		&& match(info.sep[get_depth((*param)[1], info.max_depth_dir)],
-		info.d_name, 0))
+	if ((info.infinite == -1 || p->depth <= info.max_depth_dir)
+		&& match(info.sep[get_depth(p->depth, info.max_depth_dir)],
+			info.d_name, 0))
 	{
 		sub_info.dir_ptr = opendir(info.full_path);
 		if (!sub_info.dir_ptr)
 			return ;
 		sub_info.base_path = info.full_path;
-		if ((info.infinite == -1 && (*param)[1] >= info.max_depth_file) ||
-			(info.infinite != -1 && (*param)[1] <= info.max_depth_file))
+		if ((info.infinite == -1 && p->depth >= info.max_depth_file)
+			|| (info.infinite != -1 && p->depth <= info.max_depth_file))
 			*get_name = info.full_path;
-		add_tok_unl(cmdli, *get_name, param[0], info.dir_or_file);
-		rec_dir(sub_info, (*param)[1] + 1, cmdli, param[0]);
+		add_tok_unl(cmdli, *get_name, p->is_first, info.dir_or_file);
+		rec_dir(sub_info, p->depth + 1, cmdli, p->is_first);
 		closedir(sub_info.dir_ptr);
 	}
 }
 
 void	rec_dir(t_match info, int depth, t_cmdli *cmdli, int *is_first)
 {
-	t_dir	*idk;
-	char	*get_name;
-	int		*param[2];
+	t_dir		*idk;
+	char		*get_name;
+	t_p_match	param;
 
 	while (1)
 	{
@@ -71,10 +71,10 @@ void	rec_dir(t_match info, int depth, t_cmdli *cmdli, int *is_first)
 			continue ;
 		info.d_name = (char *)idk->d_name;
 		get_name = NULL;
-		param[0] = is_first;
-		(*param)[1] = depth;
+		param.depth = depth;
+		param.is_first = is_first;
 		if (idk->d_type == DT_DIR)
-			if_rec_dir(cmdli, param, info, &get_name);
+			if_rec_dir(cmdli, &param, info, &get_name);
 		else if ((info.infinite == -1 || depth == info.max_depth_file)
 			&& !info.dir_or_file
 			&& match(info.sep[info.max_depth_file], info.d_name, 0))

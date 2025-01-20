@@ -12,11 +12,15 @@
 # include <stdlib.h>
 # include <signal.h>
 # include <limits.h>
+# include <linux/limits.h>
 # include <dirent.h>
 # include <sys/wait.h>
 # include "../libft/libft.h"
 #include "../printfd/HEADER/ft_printfd.h"
 
+# ifndef DT_DIR
+# define DT_DIR = 4
+# endif
 
 // Readline
 # include <readline/readline.h>
@@ -111,6 +115,12 @@ typedef struct s_cmdli
 
 typedef struct dirent t_dir;
 
+typedef struct t_param_match
+{
+	int	depth;
+	int	*is_first;
+}	t_p_match;
+
 typedef struct s_match_info
 {
 	DIR		*dir_ptr;
@@ -129,7 +139,7 @@ typedef struct s_match_info
 // Match
 int		match(char *s1, char *s2, char quote);
 void	rec_dir(t_match info, int depth, t_cmdli *cmdli, int *is_first);
-void	if_rec_dir(t_cmdli *cmdli, int *param[2], t_match info, char **get_name);
+void	if_rec_dir(t_cmdli *cmdli, t_p_match *p, t_match info, char **get_name);
 void	check_open_dir(char *separators, t_cmdli *cmdli);
 char	*get_path_sep(t_match *info, char *separators);
 
