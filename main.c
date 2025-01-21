@@ -143,10 +143,9 @@ int	main(int ac, char **av, char **env)
 	(void)av;
 	status = 0;
 	cmdli = NULL;
-	ft_get_shell(&shell);
 	init_shell(&shell, env);
 	ft_say_check(ac, &shell);
-	//print_minishell();
+	print_minishell();
 	term_handler();
 	signal(SIGQUIT, SIG_IGN);
 	sig_mode(1);
@@ -158,6 +157,7 @@ int	main(int ac, char **av, char **env)
 		else
 			ft_sig_exit();
 	}
+	free_tab(shell.str_env);
 	free_nodes_contents(&shell.export);
 	free_nodes(&shell.env);
 	return (0);

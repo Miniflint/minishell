@@ -48,3 +48,25 @@ char	*join_path_free(t_match *info, char *path, int i)
 	info->sep[i] = NULL;
 	return (new_path);
 }
+
+void	assign_info_base_path(t_match *info, char *separators)
+{
+	int		i;
+	char	*path;
+
+	i = 0;
+	path = get_path_sep(info, separators);
+	if (!path)
+		path = ft_strdup(".");
+	if (info->absolute_path)
+		info->base_path = ft_strjoin("/", path);
+	else
+		info->base_path = ft_strdup(path);
+	free(path);
+	while (info->sep[i])
+		i++;
+	info->max_depth_file = i - 1;
+	info->max_depth_dir = i - 1;
+	if (i > 1)
+		info->max_depth_dir = i - 2;
+}

@@ -4,10 +4,15 @@ void	free_tab(char **ss)
 {
 	unsigned int	i;
 
-	i = 0;
 	if (!ss)
 		return ;
+	i = 0;
 	while (ss[i])
-		free(ss[i++]);
+	{
+		free(ss[i]);
+		ss[i] = NULL;
+		i++;
+	}
 	free(ss);
+	ss = NULL;
 }

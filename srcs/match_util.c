@@ -65,26 +65,3 @@ int	get_depth(int depth, int max_depth)
 		return (max_depth);
 	return (depth);
 }
-
-void	assign_info_base_path(t_match *info, char *separators)
-{
-	int		i;
-	char	*path;
-
-	i = 0;
-	path = get_path_sep(info, separators);
-	if (!path)
-		path = ft_strdup(".");
-	if (info->absolute_path)
-		info->base_path = ft_strjoin("/", path);
-	else
-		info->base_path = ft_strdup(path);
-	free(path);
-	while (info->sep[i])
-		i++;
-	info->max_depth_file = i - 1;
-	info->max_depth_dir = i - 1;
-	if (i > 1)
-		info->max_depth_dir = i - 2;
-	printf("%s - %d - %d - %d - %d\n", info->base_path, i, info->infinite, info->max_depth_dir, info->max_depth_file);
-}

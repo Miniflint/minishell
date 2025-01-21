@@ -42,6 +42,7 @@ int	exec_cmd(t_cmdli *cmdli)
 	cmdli->cmd = get_absolute_path(cmdli->cmd, ft_get_var("PATH"));
 	if (!cmdli->cmd)
 		return (1);
+	__update_env();
 	cmdli->pid = fork();
 	if (cmdli->pid == -1)
 		return (return_error(errno, NULL));

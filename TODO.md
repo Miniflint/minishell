@@ -22,6 +22,8 @@
 
 - [x] match
   - [ ] PRENDRE EN COMPTE LES QUOTES
+    - [ ] quote sur le path
+    - [ ] quote sur le first char '.'
   - [x] besoin de conditions pour:
     - [x] que des directory: (ends with /)
     - [x] Recursif

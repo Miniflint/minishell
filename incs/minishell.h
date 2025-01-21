@@ -19,7 +19,7 @@
 #include "../printfd/HEADER/ft_printfd.h"
 
 # ifndef DT_DIR
-# define DT_DIR = 4
+# define DT_DIR 4
 # endif
 
 // Readline
@@ -136,12 +136,14 @@ typedef struct s_match_info
 	int		absolute_path;
 }	t_match;
 
+
 // Match
 int		match(char *s1, char *s2, char quote);
 void	rec_dir(t_match info, int depth, t_cmdli *cmdli, int *is_first);
 void	if_rec_dir(t_cmdli *cmdli, t_p_match *p, t_match info, char **get_name);
 void	check_open_dir(char *separators, t_cmdli *cmdli);
 char	*get_path_sep(t_match *info, char *separators);
+
 
 // match utils.c
 void	assign_info_base_path(t_match *info, char *separators);
@@ -151,7 +153,6 @@ char	*dup_file_name(char *name, int dir_or_file);
 void	add_tok_unl(t_cmdli *cmdli, char *name, int *is_first, int dir_or_file);
 void	parse_param_recdir(char *s, t_match *info, int *is_first);
 char	*join_path_free(t_match *info, char *path, int i);
-
 
 
 // Parsing
@@ -218,6 +219,7 @@ void		git_prompt(char *prompt, const char **prompt_elem,
 char		*get_git_branch(char *git_path);
 void		prompt_cat(char *prompt, const char *element, unsigned int *i);
 
+void		__update_env(void);
 t_variable	*init_env(char **m_env);
 char		*ft_strldup(char *s, unsigned int len);
 void		split_variable(t_variable *node, char *s);

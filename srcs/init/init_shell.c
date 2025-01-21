@@ -10,16 +10,14 @@ void	init_shell(t_shell *shell, char **m_env)
 }
 */
 
-#include "minishell.h"
-
-char *ft_strjoin_free(char *s1, char *s2)
+char	*ft_strjoin_free(char *s1, char *s2)
 {
 	int		i;
 	int		j;
 	char	*new_str;
 
-	new_str = (char *)malloc(sizeof(char) *
-		(ft_strlen(s1) + ft_strlen(s2) + 1));
+	new_str = (char *)malloc(sizeof(char)
+			* (ft_strlen(s1) + ft_strlen(s2) + 1));
 	i = 0;
 	while (s1[i])
 	{
@@ -34,31 +32,38 @@ char *ft_strjoin_free(char *s1, char *s2)
 	return (new_str);
 }
 
-char	**change_env_str(char **env_str)
+char	**copy_change_shlvl(char **env_str)
 {
 	char	**ret;
+	int		i;
+	int		j;
 	char	*str;
 
-	ret = env_str;
-	while (*env_str)
+	ret = malloc(sizeof(char *) * (ft_strslen(env_str) + 1));
+	if (!ret)
+		return (NULL);
+	i = -1;
+	j = 0;
+	while (env_str[++i])
 	{
-		if (ft_strncmp(*env_str, "SHLVL=", 6) == 0)
-			break ;
-		env_str++;
+		if (ft_strncmp(env_str[i], "SHLVL=", 6) == 0)
+		{
+			str = env_str[i] + 6;
+			ret[i - j] = ft_strjoin_free("SHLVL=", ft_itoa(ft_atoi(str) + 1));
+		}
+		else if (ft_strncmp(env_str[i], "OLDPWD=", 7) == 0)
+			j = 1;
+		else
+			ret[i - j] = ft_strdup(env_str[i]);
 	}
-	str = *env_str;
-	while (*str && *str != '=')
-		str++;
-	str++;
-	str = ft_strjoin_free("SHLVL=", ft_itoa(ft_atoi(str) + 1));
-	*env_str = str;
+	ret[i - j] = 0;
 	return (ret);
 }
 
 void	init_shell(t_shell *shell, char **m_env)
 {
-	shell->str_env = m_env;
-	shell->str_env = change_env_str(shell->str_env);
+	(void)ft_get_shell(shell);
+	shell->str_env = copy_change_shlvl(m_env);
 	shell->env = init_env(shell->str_env);
 	shell->export = init_export();
 	shell->if_sig = 1;
