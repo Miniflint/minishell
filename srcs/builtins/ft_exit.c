@@ -33,12 +33,7 @@ static void	free_shell_variables(void)
 	if (shell->env)
 		free_nodes(&shell->env);
 	m_env = ft_get_str_env();
-	while (*m_env)
-	{
-		if (ft_strncmp(*m_env, "SHLVL=", 6) == 0)
-			free(*m_env);
-		m_env++;
-	}
+	free_tab(m_env);
 }
 
 void	ft_exit(t_cmdli **cmdli)

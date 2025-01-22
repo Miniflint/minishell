@@ -116,10 +116,7 @@ void	execution(t_cmdli *cmdli, int status)
 
 void	ft_say_check(int ac, t_shell *shell)
 {
-	if (ac > 1)
-		shell->say = 1;
-	else
-		shell->say = 0;
+	shell->say = ac > 1;
 }
 
 void	parsing(t_shell *shell, t_cmdli *cmdli, int status)
