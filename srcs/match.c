@@ -65,7 +65,7 @@ void	rec_dir(t_match info, int depth, t_cmdli *cmdli, int *is_first)
 			break ;
 		if (skip_add_path(info.full_path, idk->d_name, info.base_path, depth))
 			continue ;
-		if ((info.full_path[0] == '.' && info.sep[0][0] != '.')
+		if (((info.full_path[0] == '.' && info.full_path[1] != '.' && info.full_path[1] != '/') &&  info.sep[0][0] != '.')
 			|| (info.sep[0][0] == '.' && info.full_path[0] != '.'))
 			continue ;
 		info.d_name = (char *)idk->d_name;
