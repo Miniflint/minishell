@@ -17,8 +17,8 @@
 
 - [ ] Step 2 of parsing (Tristan) :
   - [ ] Get home if ~ in first char and followed by nothing or /
-  - [ ] Set tokens in cmdli (with $, * and without ' and ")
-  - [ ] Error if var or match in redirection multiple file_names
+  - [x] Set tokens in cmdli (with $, * and without ' and ")
+  - [x] Error if var or match in redirection multiple file_names
 
 - [x] match
   - [ ] PRENDRE EN COMPTE LES QUOTES

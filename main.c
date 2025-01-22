@@ -69,6 +69,31 @@ void	expend_var(t_cmdli *cmdli)
 	}
 }
 
+char	*ft_strljoin(char *s1, char *s2, int size)
+{
+	int	i;
+	int	j;
+	char	*new_str;
+	int		len;
+
+	len = ft_strlen(s1) + ft_strlen(s2);
+	if (len < size)
+		size = len;
+	new_str = malloc(sizeof(char) * (size + 1));
+	if (!new_str)
+		return (NULL);
+	i = -1;
+	if (s1)
+		while (s1[++i] && i < size)
+			new_str[i] = s1[i];
+	j = -1;
+	if (s2)
+		while (s2[++j] && (i + j) < size)
+			new_str[i + j] = s2[j];
+	new_str[i + j] = 0;
+	return (new_str);
+}
+
 void	expend(t_cmdli *cmdli)
 {
 	// cmdli->tok_cursor = cmdli->tokens;
@@ -142,7 +167,7 @@ int	main(int ac, char **av, char **env)
 	cmdli = NULL;
 	init_shell(&shell, env);
 	ft_say_check(ac, &shell);
-	print_minishell();
+	//print_minishell();
 	term_handler();
 	signal(SIGQUIT, SIG_IGN);
 	sig_mode(1);
