@@ -21,9 +21,10 @@ int	check_wildcard(char *s)
 			pass_until_char(&s, '\'');
 		else if (*s == '"')
 			pass_until_char(&s, '"');
-		if (*s == '*')
+		else if (*s == '*')
 			return (1);
-		++s;
+		else
+			++s;
 	}
 	return (0);
 }
@@ -69,29 +70,35 @@ void	expend_var(t_cmdli *cmdli)
 	}
 }
 
-char	*ft_strljoin(char *s1, char *s2, int size)
+char	*remove_quote(char *str)
 {
-	int	i;
-	int	j;
-	char	*new_str;
-	int		len;
+	char	*ret;
+	char	quote;
+	int		offset;
+	int		i;
 
-	len = ft_strlen(s1) + ft_strlen(s2);
-	if (len < size)
-		size = len;
-	new_str = malloc(sizeof(char) * (size + 1));
-	if (!new_str)
-		return (NULL);
-	i = -1;
-	if (s1)
-		while (s1[++i] && i < size)
-			new_str[i] = s1[i];
-	j = -1;
-	if (s2)
-		while (s2[++j] && (i + j) < size)
-			new_str[i + j] = s2[j];
-	new_str[i + j] = 0;
-	return (new_str);
+	i = 0;
+	quote = 0;
+	offset = 0;
+	while (str[i + offset])
+		if (quote && str[i + offset] == quote)
+		{
+			quote = 0;
+			offset++;
+		}
+		else if (!quote && (str[i + offset] == '\'' || str[i + offset] == '\"'))
+			quote = str[i + offset++];
+		else
+		{
+			str[i] = str[i + offset];
+			i++;
+		}
+	str[i] = 0;
+	if (!offset)
+		return (str);
+	ret = ft_strdup(str);
+	free(str);
+	return (ret);
 }
 
 void	expend(t_cmdli *cmdli)
@@ -107,6 +114,12 @@ void	expend(t_cmdli *cmdli)
 	{
 		if (check_wildcard(cmdli->tok_cursor->token))
 			check_open_dir(cmdli->tok_cursor->token, cmdli);
+		cmdli->tok_cursor = cmdli->tok_cursor->next;
+	}
+	cmdli->tok_cursor = cmdli->tokens;
+	while (cmdli->tok_cursor)
+	{
+		cmdli->tok_cursor->token = remove_quote(cmdli->tok_cursor->token);
 		cmdli->tok_cursor = cmdli->tok_cursor->next;
 	}
 }

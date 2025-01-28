@@ -21,9 +21,9 @@
   - [x] Error if var or match in redirection multiple file_names
 
 - [x] match
-  - [ ] PRENDRE EN COMPTE LES QUOTES
-    - [ ] quote sur le path
-    - [ ] quote sur le first char '.'
+  - [x] PRENDRE EN COMPTE LES QUOTES
+    - [x] quote sur le path
+    - [x] quote sur le first char '.'
   - [x] besoin de conditions pour:
     - [x] que des directory: (ends with /)
     - [x] Recursif

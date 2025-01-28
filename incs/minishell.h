@@ -137,6 +137,8 @@ typedef struct s_match_info
 }	t_match;
 
 
+char	*remove_quote(char *str);
+
 // Match
 int		match(char *s1, char *s2, char quote);
 void	rec_dir(t_match info, int depth, t_cmdli *cmdli, int *is_first);

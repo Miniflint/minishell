@@ -62,6 +62,7 @@ void	assign_info_base_path(t_match *info, char *separators)
 		info->base_path = ft_strjoin("/", path);
 	else
 		info->base_path = ft_strdup(path);
+	info->base_path = remove_quote(info->base_path);
 	free(path);
 	while (info->sep[i])
 		i++;
