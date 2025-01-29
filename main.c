@@ -29,6 +29,20 @@ int	check_wildcard(char *s)
 	return (0);
 }
 
+int	check_var(char *s)
+{
+	while (*s)
+	{
+		if (*s == '\'')
+			pass_until_char(&s, '\'');
+		else if (*s == '$' && (ft_isalnum(s[1]) || s[1] == '?'))
+			return (1);
+		else
+			++s;
+	}
+	return (0);
+}
+
 int	expend_dquote_var(char **ret, char *str)
 {
 	if (ret)
@@ -36,38 +50,153 @@ int	expend_dquote_var(char **ret, char *str)
 	return (0);
 }
 
-void	expend_var(t_cmdli *cmdli)
+char	*expend_home(t_cmdli *cmdli, int *i)
 {
+	char *ret;
+
+	ret = cmdli->tok_cursor->token;
+	if (*cmdli->tok_cursor->token == '~' && (!cmdli->tok_cursor->token[1] || cmdli->tok_cursor->token[1] == '/'))
+	{
+		++(*i);
+		cmdli->tok_cursor->token = ft_get_var("HOME");
+		if (!cmdli->tok_cursor->token)
+		{
+			ft_printfd(2, "Erreur de malloc non gerer dans main.c ligne 40\n");
+			return (NULL);
+		}
+	}
+	else
+		cmdli->tok_cursor->token = NULL;
+	return (ret);
+}
+
+char	*ft_strljoin(char *s1, char *s2, int len)
+{
+	char	*str;
 	char	*ret;
 	int		i;
 
-	ret = NULL;
-	if (*cmdli->tok_cursor->token == '~' && (!cmdli->tok_cursor->token[1] || cmdli->tok_cursor->token[1] == '/'))
+	str = malloc((ft_strlen(s1) + len + 1) * sizeof(char));
+	ret = str;
+	if (!str)
+		return (0);
+	i = 0;
+	if (s1)
 	{
-		ret = ft_strjoin(ft_get_var("HOME"), cmdli->tok_cursor->token + 1);
-		if (!ret)
-		{
-			ft_printfd(2, "Erreur de malloc non gerer dans main.c ligne 40\n");
-			return ;
-		}
-		free(cmdli->tok_cursor->token);
-		cmdli->tok_cursor->token = ret;
-		cmdli->tok_cursor = cmdli->tok_cursor->next;
+		while (s1[i])
+			*(str++) = s1[i++];
+		free(s1);
 	}
-	while (cmdli->tok_cursor)
+	i = 0;
+	if (s2)
+		while (i < len && *s2)
+			str[i++] = *(s2++);
+	str[i] = 0;
+	return (ret);
+}
+
+char	*strfreejoin(char *s1, char *s2)
+{
+	char	*str;
+	char	*ret;
+	char	*tmp;
+
+	str = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
+	ret = str;
+	if (!str)
+		return (0);
+	if (s1)
 	{
-		i = 0;
-		while (cmdli->tok_cursor->token[i])
+		tmp = s1;
+		while (*s1)
+			*(str++) = *(s1++);
+		free(tmp);
+	}
+	if (s2)
+	{
+		tmp = s2;
+		while (*s2)
+			*(str++) = *(s2++);
+		free(tmp);
+	}
+	*str = 0;
+	return (ret);
+}
+
+
+int	expend_var(t_cmdli *cmdli)
+{
+ 	char	*tmp;
+	char	*tmp2;
+	int		i;
+	char	*cursor;
+	char	quote;
+
+	i = 0;
+	tmp = expend_home(cmdli, &i);
+	cursor = tmp + i;
+	i = 0;
+	quote = 0;
+	while (cursor[i])
+	{
+		if (!quote && cursor[i] == '\'')
 		{
-			if (cmdli->tok_cursor->token[i] == '"')
-			{
-				if (expend_dquote_var(&ret, cmdli->tok_cursor->token + i + 1))
-					return ;
-			}
 			++i;
+			while (cursor[i] && cursor[i] != '\'')
+				++i;
+			if (cursor[i])
+				++i;
 		}
-		cmdli->tok_cursor = cmdli->tok_cursor->next;
+		else
+		{
+			if (quote && cursor[i] == quote)
+				quote = 0;
+			else if (!quote && cursor[i] == '"')
+				quote = cursor[i];
+			if (cursor[i] == '$' && (cursor[i + 1] == '?' || ft_isalnum(cursor[i + 1])))
+			{
+				cmdli->tok_cursor->token = ft_strljoin(cmdli->tok_cursor->token, cursor, i);
+				if (!cmdli->tok_cursor->token)
+					return (ft_printfd(2, "Fais chier... Ligne %d %s\n", __LINE__, __FILE__));
+				cursor += i + 1;
+				i = 0;
+				if (*cursor == '?')
+				{
+
+					cmdli->tok_cursor->token = strfreejoin(cmdli->tok_cursor->token, ft_get_var("?"));
+					if (!cmdli->tok_cursor->token)
+						return (ft_printfd(2, "Fais chier... Ligne %d %s\n", __LINE__, __FILE__));
+					++cursor;
+					i = 0;
+				}
+				else
+				{
+					while (ft_isalnum(cursor[i]))
+						++i;
+					tmp2 = ft_strldup(cursor, (unsigned)i);
+					if (!tmp2)
+						return (ft_printfd(2, "Fais chier... Ligne %d %s\n", __LINE__, __FILE__));
+					cmdli->tok_cursor->token = strfreejoin(cmdli->tok_cursor->token, ft_get_var(tmp2));
+					free(tmp2);
+					if (!cmdli->tok_cursor->token)
+						return (ft_printfd(2, "Fais chier... Ligne %d %s\n", __LINE__, __FILE__));
+					cursor += i;
+					i = 0;
+				}
+			}
+			else
+				++i;
+		}
 	}
+	if (i)
+	{
+		cmdli->tok_cursor->token = ft_strljoin(cmdli->tok_cursor->token, cursor, i);
+		if (!cmdli->tok_cursor->token)
+			return (ft_printfd(2, "Fais chier... Ligne %d %s\n", __LINE__, __FILE__));
+	}
+	if (tmp)
+		free(tmp);
+	return (0);
 }
 
 char	*remove_quote(char *str)
@@ -103,12 +232,14 @@ char	*remove_quote(char *str)
 
 void	expend(t_cmdli *cmdli)
 {
-	// cmdli->tok_cursor = cmdli->tokens;
-	// while (cmdli->tok_cursor)
-	// {
-	// 	expend_var(cmdli);
-	// 	cmdli->tok_cursor = cmdli->tok_cursor->next;
-	// }
+	cmdli->tok_cursor = cmdli->tokens;
+	while (cmdli->tok_cursor)
+	{
+		if (check_var(cmdli->tok_cursor->token)
+			|| (*cmdli->tok_cursor->token == '~' && (!cmdli->tok_cursor->token[1] || cmdli->tok_cursor->token[1] == '/')))
+			(void)expend_var(cmdli);
+		cmdli->tok_cursor = cmdli->tok_cursor->next;
+	}
 	cmdli->tok_cursor = cmdli->tokens;
 	while (cmdli->tok_cursor)
 	{
