@@ -105,9 +105,14 @@ int	check_wildcard(char *s)
 
 int	check_var(char *s)
 {
+	char	quote;
+
+	quote = 0;
 	while (*s)
 	{
-		if (*s == '\'')
+		if (*s == '"')
+			quote = !quote;
+		if (!quote && *s == '\'')
 			pass_until_char(&s, '\'');
 		else if (*s == '$' && (ft_isalnum(s[1]) || s[1] == '?'))
 			return (1);
