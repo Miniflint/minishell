@@ -17,8 +17,12 @@ void	add_tok_unl(t_cmdli *cmdli, char *name, int *is_first, int dir_or_file)
 			if (cmdli->tok_cursor->type == ARG
 				|| cmdli->tok_cursor->type == CMD)
 				new_unlist(cmdli, dup_file_name(name, dir_or_file), ARG);
-			else
-				ft_printfd(2, "ambigous redirect %d, %s\n", __LINE__, __FILE__);
+			else if (!cmdli->cmd_error)
+			{
+				cmdli->cmd_error = 1;
+				ft_printfd(2, "#+minishell#0: %s:#/r ambigous redirect#0\n", name);
+				g_errno = 1;
+			}
 		}
 	}
 }

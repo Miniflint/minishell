@@ -15,14 +15,12 @@
 
 char	*split_cmd(char **cmdline, unsigned int *i, char c)
 {
-	printf("split_cmd in\n");
 	unsigned int	j;
 
 	j = 0;
 	while ((*cmdline)[*i + j] && ((*cmdline)[*i + j] == c))
 		++j;
 	*i += j;
-	printf("split_cmd out\n");
 	return (ft_substr((*cmdline), *i - j, j));
 }
 

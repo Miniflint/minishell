@@ -115,7 +115,7 @@ typedef struct s_cmdli
 
 typedef struct dirent t_dir;
 
-typedef struct t_param_match
+typedef struct s_param_match
 {
 	int	depth;
 	int	*is_first;
