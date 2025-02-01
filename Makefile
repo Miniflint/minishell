@@ -33,7 +33,8 @@ SRCS	=	main.c                                   srcs/images/image_10_12.c       
 			srcs/execution/set_redirection.c         srcs/init/list_utils.c                   srcs/secure/error.c	\
 			srcs/fun/ft_say.c                        srcs/parsing/add_andor.c                 srcs/secure/free_tab_null.c	\
 			srcs/fun/print_minishell.c               srcs/parsing/add_arg.c                   srcs/signals/sig_handler.c	\
-			srcs/match.c                             srcs/match_util.c                        srcs/match_util_2.c
+			srcs/match.c                             srcs/match_util.c                        srcs/match_util_2.c	\
+			srcs/init/ft_prompt_utils2.c
 
 INC_FLAGS := -Ilibs/libft/incs -Iincs
 LIBS := -Llibft -lft -lreadline
