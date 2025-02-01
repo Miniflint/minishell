@@ -311,7 +311,7 @@ char	*remove_quote(char *str)
 	return (ret);
 }
 
-void	expend(t_cmdli *cmdli)
+void	expend(t_cmdli *cmdli) //Segfault with 'export ARG="r  a d  g     sd   "' and '"a"$ARG'
 {
 	t_unlist	*tmp;
 
