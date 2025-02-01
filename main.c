@@ -4,6 +4,66 @@
 
 int	g_errno;
 
+void	add_new_tok(t_cmdli *cmdli, char *cursor, int *is_first, unsigned int len)
+{
+	if (cursor)
+	{
+		if (*is_first)
+		{
+			*is_first = 0;
+			cmdli->tok_cursor->token = ft_strldup(cursor, len);
+			if (!cmdli->tok_cursor->token)
+				return ;
+		}
+		else
+		{
+			if (cmdli->tok_cursor->type == ARG
+				|| cmdli->tok_cursor->type == CMD)
+				new_unlist(cmdli, ft_strldup(cursor, len), ARG);
+			else
+				ft_printfd(2, "ambigous redirect\n");
+		}
+	}
+}
+
+void	split_tokens(t_cmdli *cmdli)
+{
+	int		is_first;
+	char	*cursor;
+	char	*tmp;
+	int		i;
+	char	quote;
+
+	tmp = cmdli->tok_cursor->token;
+	cursor = tmp;
+	cmdli->tok_cursor->token = NULL;
+	is_first = 1;
+	i = 0;
+	while(*cursor == ' ')
+		++cursor;
+	while (cursor[i])
+	{
+		while (cursor[i] && cursor[i] != ' ' && cursor[i] != '\'' && cursor[i] != '"')
+			++i;
+		if (cursor[i] == '\'' || cursor[i] == '"')
+		{
+			quote = cursor[i++];
+			while (cursor[i] && cursor[i] != quote)
+				++i;
+		}
+		if (cursor[i] == ' ')
+		{
+			add_new_tok(cmdli, cursor, &is_first, i);
+			cursor += i + 1;
+			while(*cursor == ' ')
+				++cursor;
+			i = 0;
+		}
+	}
+	if (i && cursor[i - 1] != ' ')
+		add_new_tok(cmdli, cursor, &is_first, i);
+}
+
 void	pass_until_char(char **s, char c)
 {
 	++*s;
@@ -245,6 +305,12 @@ void	expend(t_cmdli *cmdli)
 	{
 		if (check_wildcard(cmdli->tok_cursor->token))
 			check_open_dir(cmdli->tok_cursor->token, cmdli);
+		cmdli->tok_cursor = cmdli->tok_cursor->next;
+	}
+	cmdli->tok_cursor = cmdli->tokens;
+	while (cmdli->tok_cursor)
+	{
+		split_tokens(cmdli);
 		cmdli->tok_cursor = cmdli->tok_cursor->next;
 	}
 	cmdli->tok_cursor = cmdli->tokens;
