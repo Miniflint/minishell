@@ -62,6 +62,7 @@ void	split_tokens(t_cmdli *cmdli)
 	}
 	if (i && cursor[i - 1] != ' ')
 		add_new_tok(cmdli, cursor, &is_first, i);
+	free(tmp);
 }
 
 void	pass_until_char(char **s, char c)
