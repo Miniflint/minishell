@@ -91,10 +91,8 @@ int	check_wildcard(char *s)
 {
 	while (*s)
 	{
-		if (*s == '\'')
-			pass_until_char(&s, '\'');
-		else if (*s == '"')
-			pass_until_char(&s, '"');
+		if (*s == '\'' || *s == '"')
+			pass_until_char(&s, *s);
 		else if (*s == '*')
 			return (1);
 		else
