@@ -18,7 +18,7 @@ void	add_tok_unl(t_cmdli *cmdli, char *name, int *is_first, int dir_or_file)
 				|| cmdli->tok_cursor->type == CMD)
 				new_unlist(cmdli, dup_file_name(name, dir_or_file), ARG);
 			else
-				ft_printfd(2, "ambigous redirect\n");
+				ft_printfd(2, "ambigous redirect %d, %s\n", __LINE__, __FILE__);
 		}
 	}
 }

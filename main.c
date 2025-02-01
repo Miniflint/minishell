@@ -21,7 +21,10 @@ void	add_new_tok(t_cmdli *cmdli, char *cursor, int *is_first, unsigned int len)
 				|| cmdli->tok_cursor->type == CMD)
 				new_unlist(cmdli, ft_strldup(cursor, len), ARG);
 			else
-				ft_printfd(2, "ambigous redirect\n");
+			{
+				cmdli->cmd_error = 1;
+				ft_printfd(2, "ambigous redirect %d, %s\n", __LINE__, __FILE__);
+			}
 		}
 	}
 }

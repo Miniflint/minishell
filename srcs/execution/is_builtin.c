@@ -58,7 +58,7 @@ void	exec_builtin(void (*f)(t_cmdli **), t_cmdli **cmdli, int mode)
 
 void	is_builtin(t_cmdli **cmdli, int mode)
 {
-	if (andor_check(cmdli))
+	if (andor_check(cmdli) || (*cmdli)->cmd_error)
 		return ;
 	if (!ft_strcmp((*cmdli)->cmd, "env"))
 		exec_builtin(ft_env, cmdli, mode);
