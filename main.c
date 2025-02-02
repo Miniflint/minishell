@@ -63,6 +63,8 @@ void	split_tokens(t_cmdli *cmdli)
 			quote = cursor[i++];
 			while (cursor[i] && cursor[i] != quote)
 				++i;
+			if (cursor[i])
+				++i;
 		}
 		if (cursor[i] == ' ')
 		{
@@ -344,7 +346,7 @@ void	expend(t_cmdli *cmdli) //Segfault with 'export ARG="r  a d  g     sd   "' a
 				tmp->next = cmdli->tok_cursor->next;
 			else
 				cmdli->tokens = cmdli->tokens->next;
-			if (!*cmdli->tok_cursor->token)
+			if (cmdli->tok_cursor->token)
 				free(cmdli->tok_cursor->token);
 			free(cmdli->tok_cursor);
 			cmdli->tok_cursor = tmp;

@@ -48,7 +48,7 @@ OBJS	=	$(SRCS:.c=.o)
 CC		=	gcc
 RM		=	rm -f
 
-CFLAGS	=	-Wall -Wextra -Werror -g3
+CFLAGS	=	-Wall -Wextra -Werror -g
 
 ifeq ($(DEBUG), 1)
 	CFLAGS += -fsanitize=address -g3
