@@ -29,10 +29,26 @@ void	free_unlist(t_cmdli *cmdli)
 	cmdli->tokens = NULL;
 }
 
+static void	free_unlist_all(t_cmdli *cmdli)
+{
+	t_unlist	*tmp;
+
+	cmdli->tok_cursor = cmdli->tokens;
+	while (cmdli->tok_cursor)
+	{
+		tmp = cmdli->tok_cursor;
+		cmdli->tok_cursor = cmdli->tok_cursor->next;
+		if (tmp->token)
+			free(tmp->token);
+		free(tmp);
+	}
+	cmdli->tokens = NULL;
+}
+//store_tokens put NULL to unlist tokens;
 void	free_content(t_cmdli *cmdli)
 {
 	if (cmdli->tokens)
-		free_unlist(cmdli);
+		free_unlist_all(cmdli);
 	if (cmdli->cmd_args)
 		free_tab(cmdli->cmd_args);
 	if (cmdli->pipe_in)

@@ -22,7 +22,7 @@ int	check_exit_code(char **args)
 	return (ft_atoi(args[1]));
 }
 
-static void	free_shell_variables(void)
+void	free_shell_variables(void)
 {
 	t_shell	*shell;
 	char	**m_env;

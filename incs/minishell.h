@@ -242,6 +242,7 @@ void		ft_export(t_cmdli **cmdli);
 void		ft_unset(t_cmdli **cmdli);
 void		ft_pwd(t_cmdli **cmdli);
 void		ft_exit(t_cmdli **cmdli);
+void		free_shell_variables(void);
 void		ft_sig_exit(void);
 void		ft_cd(t_cmdli **cmdli);
 void		ft_echo(t_cmdli **cmdli);
@@ -295,6 +296,7 @@ int			exit_error(int error, char *custom);
 char		**ss_error(int error, char *custom);
 char		*s_error(int error, char *custom);
 void		void_error(int error, char *custom);
+void		malloc_error(t_cmdli **cmdli);
 
 //Fun
 void		ft_say(char *str);
