@@ -14,6 +14,7 @@ void	malloc_error(t_cmdli **cmdli)
 	m_env = ft_get_str_env();
 	if (m_env)
 		free_tab(m_env);
+	free_cmdli(cmdli);
 	if (ft_get_shell(NULL)->read)
 		free(ft_get_shell(NULL)->read);
 	rl_clear_history();
