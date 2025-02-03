@@ -50,7 +50,7 @@ void	split_tokens(t_cmdli *cmdli)
 			free(tmp);
 		cmdli->tok_cursor->token = ft_strdup("");
 		if (!cmdli->tok_cursor->token)
-			ft_printfd(2, "malloc error %d %s", __LINE__, __FILE__);
+			malloc_error(&cmdli);
 		return ;
 	}
 	cmdli->tok_cursor->token = NULL;
@@ -122,13 +122,6 @@ int	check_var(char *s)
 	return (0);
 }
 
-int	expend_dquote_var(char **ret, char *str)
-{
-	if (ret)
-		ft_printfd(1, "I'm in expend_dquote_var with %s\n", str);
-	return (0);
-}
-
 char	*expend_home(t_cmdli *cmdli, int *i)
 {
 	char *ret;
@@ -139,10 +132,7 @@ char	*expend_home(t_cmdli *cmdli, int *i)
 		++(*i);
 		cmdli->tok_cursor->token = ft_get_var("HOME");
 		if (!cmdli->tok_cursor->token)
-		{
-			ft_printfd(2, "Erreur de malloc non gerer dans main.c ligne 40\n");
-			return (NULL);
-		}
+			malloc_error(&cmdli);
 	}
 	else
 		cmdli->tok_cursor->token = NULL;
@@ -236,7 +226,7 @@ int	expend_var(t_cmdli *cmdli)
 			{
 				cmdli->tok_cursor->token = ft_strljoin(cmdli->tok_cursor->token, cursor, i);
 				if (!cmdli->tok_cursor->token)
-					return (ft_printfd(2, "Fais chier... Ligne %d %s\n", __LINE__, __FILE__));
+					malloc_error(&cmdli);
 				cursor += i + 1;
 				i = 0;
 				if (*cursor == '?')
@@ -244,7 +234,7 @@ int	expend_var(t_cmdli *cmdli)
 
 					cmdli->tok_cursor->token = strfreejoin(cmdli->tok_cursor->token, ft_get_var("?"));
 					if (!cmdli->tok_cursor->token)
-						return (ft_printfd(2, "Fais chier... Ligne %d %s\n", __LINE__, __FILE__));
+						malloc_error(&cmdli);
 					++cursor;
 					i = 0;
 				}
@@ -254,11 +244,11 @@ int	expend_var(t_cmdli *cmdli)
 						++i;
 					tmp2 = ft_strldup(cursor, (unsigned)i);
 					if (!tmp2)
-						return (ft_printfd(2, "Fais chier... Ligne %d %s\n", __LINE__, __FILE__));
+						malloc_error(&cmdli);
 					cmdli->tok_cursor->token = strfreejoin(cmdli->tok_cursor->token, ft_get_var(tmp2));
 					free(tmp2);
 					if (!cmdli->tok_cursor->token)
-						return (ft_printfd(2, "Fais chier... Ligne %d %s\n", __LINE__, __FILE__));
+						malloc_error(&cmdli);
 					cursor += i;
 					i = 0;
 				}
@@ -271,7 +261,7 @@ int	expend_var(t_cmdli *cmdli)
 	{
 		cmdli->tok_cursor->token = ft_strljoin(cmdli->tok_cursor->token, cursor, i);
 		if (!cmdli->tok_cursor->token)
-			return (ft_printfd(2, "Fais chier... Ligne %d %s\n", __LINE__, __FILE__));
+			malloc_error(&cmdli);
 	}
 	if (tmp)
 		free(tmp);
@@ -308,10 +298,12 @@ char	*remove_quote(char *str)
 		return (str);
 	ret = ft_strdup(str);
 	free(str);
+	if (!ret)
+		malloc_error(NULL); //Get_cmdli
 	return (ret);
 }
 
-void	expend(t_cmdli *cmdli) //Segfault with 'export ARG="r  a d  g     sd   "' and '"a"$ARG'
+void	expend(t_cmdli *cmdli)
 {
 	t_unlist	*tmp;
 
