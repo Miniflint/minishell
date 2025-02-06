@@ -89,23 +89,19 @@ char	*get_path_sep(t_match *info, char *separators)
 	if (!info->sep)
 		return (NULL);
 	info->sep_base_ptr = info->sep;
-	i = 0;
+	i = -1;
 	path = NULL;
-	while (info->sep[i])
+	while (info->sep[++i])
 	{
 		j = 0;
 		while (info->sep[i][j])
 		{
-			if (info->sep[i][j] == '*')
-			{
-				info->sep += i;
+			if (idk_anymore(&info->sep, i, j))
 				return (path);
-			}
 			j++;
 		}
 		if (info->sep[i][j] != '*')
 			path = join_path_free(info, path, i);
-		i++;
 	}
 	return (path);
 }

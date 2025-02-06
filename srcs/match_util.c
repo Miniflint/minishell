@@ -1,5 +1,16 @@
 #include "minishell.h"
 
+int	idk_anymore(char ***sep, int i, int j)
+{
+	if ((*sep)[i][j] == '*')
+	{
+		(*sep) += i;
+		return (1);
+	}
+	return (0);
+}
+
+
 void	add_tok_unl(t_cmdli *cmdli, char *name, int *is_first, int dir_or_file)
 {
 	if (name)

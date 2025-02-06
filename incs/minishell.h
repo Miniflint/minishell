@@ -136,6 +136,7 @@ typedef struct s_match_info
 }	t_match;
 
 char		*remove_quote(char *str);
+int			idk_anymore(char ***sep, int i, int j);
 
 // Match
 int			match(char *s1, char *s2, char quote);
