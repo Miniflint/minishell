@@ -1,15 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: hermesrolle <hermesrolle@student.42.fr>    +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/10/10 14:02:39 by lgenevey          #+#    #+#              #
-#    Updated: 2024/12/23 23:03:32 by hermesrolle      ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME	=	minishell
 
 SRCS	=	main.c                                   srcs/images/image_10_12.c                srcs/parsing/add_cmd.c	\
@@ -48,7 +36,7 @@ OBJS	=	$(SRCS:.c=.o)
 CC		=	gcc
 RM		=	rm -f
 
-CFLAGS	=	-Wall -Wextra -Werror -g
+CFLAGS	=	-Wall -Wextra -Werror
 
 ifeq ($(DEBUG), 1)
 	CFLAGS += -fsanitize=address -g3

@@ -1,16 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   split_cmd.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: hermesrolle <hermesrolle@student.42.fr>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/12 07:03:54 by hermesrolle       #+#    #+#             */
-/*   Updated: 2025/01/12 07:43:00 by hermesrolle      ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "../../incs/minishell.h"
+#include "minishell.h"
 #include <stdio.h>
 
 char	*split_cmd(char **cmdline, unsigned int *i, char c)
@@ -49,10 +37,6 @@ char	*split_cmd_sp_ret(char	**cmdline, char *ret,
 
 char	*split_cmd_sp_add_func(char **cmdline, char *ret, unsigned int *i)
 {
-	// if (((*cmdline)[*i] && (*cmdline)[*i] == '$'))
-	// 	return (add_var(cmdline, ret, i));
-	// if ((*cmdline)[*i] == '~')
-	// 	return (add_home(i));
 	if ((*cmdline)[*i] && (*cmdline)[*i] == '\'')
 		return (add_quote(cmdline, ret, i));
 	else if ((*cmdline)[*i] && (*cmdline)[*i] == '"')
@@ -60,45 +44,7 @@ char	*split_cmd_sp_add_func(char **cmdline, char *ret, unsigned int *i)
 	return (ret);
 }
 
-// char	*split_cmd_sp(char **cmdline, unsigned int *i)
-// { //ne pas gerer ici ~, $ et *
-// 	unsigned int	j;
-// 	char			*ret;
-
-// 	printf("split_cmd_sp in\n");
-// 	ret = NULL;
-// 	while ((*cmdline)[*i] && (*cmdline)[*i] != ' ' && (*cmdline)[*i]
-// 		!= '<' && (*cmdline)[*i] != '>' && (*cmdline)[*i]
-// 		!= '|' && (*cmdline)[*i] != '&' && (*cmdline)[*i] != '('
-// 		&& (*cmdline)[*i] != ')')
-// 	{
-// 		j = 0;
-// 		while ((*cmdline)[*i + j] && (*cmdline)[*i + j] != ' '
-// 			&& (*cmdline)[*i + j] != '<' && (*cmdline)[*i + j] != '>'
-// 			&& (*cmdline)[*i + j] != '|' && (*cmdline)[*i + j] != '&'
-// 			&& (*cmdline)[*i + j] != '(' && (*cmdline)[*i + j] != ')'
-// 			&& (*cmdline)[*i + j] != '\'' && (*cmdline)[*i + j]
-// 			!= '"' && !(!j && !ret && ((*cmdline)[*i + j + 1] == '/'
-// 			|| (*cmdline)[*i + j + 1] == ' ' || !(*cmdline)[*i + j + 1])))
-// 			++j;
-// 		if (!j && (*cmdline)[*i + j] != '\'' && (*cmdline)[*i + j] != '"')
-// 		{
-// 			printf("split_cmd_sp_ret in\n");
-// 			return (ret);
-// 			printf("split_cmd_sp_ret out\n");
-// 		}
-// 		else if (j)
-// 			ret = split_cmd_sp_ret(cmdline, ret, i, j);
-// 		*i += j;
-// 		printf("split_cmd_sp_add_func in\n");
-// 		ret = split_cmd_sp_add_func(cmdline, ret, i);
-// 		printf("split_cmd_sp_add_func out\n");
-// 	}
-// 	printf("split_cmd_sp out\n");
-// 	return (ret);
-// }
-
-char	*split_cmd_sp(char **cmdline, unsigned int *i) //Il faut gerer les '(' et ')'
+char	*split_cmd_sp(char **cmdline, unsigned int *i)
 {
 	unsigned int	j;
 	char			*ret;

@@ -44,6 +44,7 @@ static void	free_unlist_all(t_cmdli *cmdli)
 	}
 	cmdli->tokens = NULL;
 }
+
 //store_tokens put NULL to unlist tokens;
 void	free_content(t_cmdli *cmdli)
 {
