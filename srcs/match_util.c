@@ -20,7 +20,8 @@ void	add_tok_unl(t_cmdli *cmdli, char *name, int *is_first, int dir_or_file)
 			else if (!cmdli->cmd_error)
 			{
 				cmdli->cmd_error = 1;
-				ft_printfd(2, "#+minishell#0: %s:#/r ambigous redirect#0\n", name);
+				ft_printfd(2, "#+minishell#0: %s:#/r ambigous redirect#0\n",
+					name);
 				g_errno = 1;
 			}
 		}
