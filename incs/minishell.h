@@ -1,6 +1,5 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
-//# define PATH_MAX 2048
 
 # include <fcntl.h>
 # include <errno.h>
@@ -16,10 +15,10 @@
 # include <dirent.h>
 # include <sys/wait.h>
 # include "../libft/libft.h"
-#include "../printfd/HEADER/ft_printfd.h"
+# include "../printfd/HEADER/ft_printfd.h"
 
 # ifndef DT_DIR
-# define DT_DIR 4
+#  define DT_DIR 4
 # endif
 
 // Readline
@@ -113,7 +112,7 @@ typedef struct s_cmdli
 	struct s_cmdli	*next;
 }					t_cmdli;
 
-typedef struct dirent t_dir;
+typedef struct dirent	t_dir;
 
 typedef struct s_param_match
 {
@@ -136,26 +135,24 @@ typedef struct s_match_info
 	int		absolute_path;
 }	t_match;
 
-
-char	*remove_quote(char *str);
-
 // Match
-int		match(char *s1, char *s2, char quote);
-void	rec_dir(t_match info, int depth, t_cmdli *cmdli, int *is_first);
-void	if_rec_dir(t_cmdli *cmdli, t_p_match *p, t_match info, char *get_name);
-void	check_open_dir(char *separators, t_cmdli *cmdli);
-char	*get_path_sep(t_match *info, char *separators);
-
+int			match(char *s1, char *s2, char quote);
+void		rec_dir(t_match info, int depth, t_cmdli *cmdli, int *is_first);
+void		if_rec_dir(t_cmdli *cmdli, t_p_match *p,
+				t_match info, char *get_name);
+void		check_open_dir(char *separators, t_cmdli *cmdli);
+char		*get_path_sep(t_match *info, char *separators);
 
 // match utils.c
-void	assign_info_base_path(t_match *info, char *separators);
-int		get_depth(int depth, int max_depth);
-int		skip_add_path(char f_p[PATH_MAX], char *d_name, char *base_path, int depth);
-char	*dup_file_name(char *name, int dir_or_file);
-void	add_tok_unl(t_cmdli *cmdli, char *name, int *is_first, int dir_or_file);
-void	parse_param_recdir(char *s, t_match *info, int *is_first);
-char	*join_path_free(t_match *info, char *path, int i);
-
+void		assign_info_base_path(t_match *info, char *separators);
+int			get_depth(int depth, int max_depth);
+int			skip_add_path(char f_p[PATH_MAX], char *d_name,
+				char *base_path, int depth);
+char		*dup_file_name(char *name, int dir_or_file);
+void		add_tok_unl(t_cmdli *cmdli, char *name,
+				int *is_first, int dir_or_file);
+void		parse_param_recdir(char *s, t_match *info, int *is_first);
+char		*join_path_free(t_match *info, char *path, int i);
 
 // Parsing
 void		free_tab(char **ss);
@@ -194,7 +191,8 @@ void		type_and_set(char *s, t_cmdli **cmds_list,
 t_cmdli		*get_cmds(char **cmdline);
 int			check_close_parenthesis(char *s, char *token,
 				t_shell *shell, t_type type);
-void		close_parenthesis(t_cmdli **cmds_list, t_shell *shell, t_type *type);
+void		close_parenthesis(t_cmdli **cmds_list,
+				t_shell *shell, t_type *type);
 void		open_parenthesis(t_cmdli **cmds_list, t_shell *shell, t_type *type);
 
 // Parsing step 2
@@ -213,6 +211,7 @@ void		split_tokens(t_cmdli *cmdli);
 void		add_new_tok(t_cmdli *cmdli, char *cursor, int *is_first,
 				unsigned int len);
 int			*__get_is_first(int *__is_first);
+char		*remove_quote(char *str);
 
 // List utils
 void		free_nodes(t_variable **list);
