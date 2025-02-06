@@ -135,6 +135,8 @@ typedef struct s_match_info
 	int		absolute_path;
 }	t_match;
 
+char		*remove_quote(char *str);
+
 // Match
 int			match(char *s1, char *s2, char quote);
 void		rec_dir(t_match info, int depth, t_cmdli *cmdli, int *is_first);
@@ -192,7 +194,7 @@ t_cmdli		*get_cmds(char **cmdline);
 int			check_close_parenthesis(char *s, char *token,
 				t_shell *shell, t_type type);
 void		close_parenthesis(t_cmdli **cmds_list,
-				t_shell *shell, t_type *type);
+			t_shell *shell, t_type *type);
 void		open_parenthesis(t_cmdli **cmds_list, t_shell *shell, t_type *type);
 
 // Parsing step 2
@@ -210,8 +212,7 @@ void		expend(t_cmdli *cmdli);
 void		split_tokens(t_cmdli *cmdli);
 void		add_new_tok(t_cmdli *cmdli, char *cursor, int *is_first,
 				unsigned int len);
-int			*__get_is_first(int *__is_first);
-char		*remove_quote(char *str);
+int			*__get_is_first(int *__is_first, int *i);
 
 // List utils
 void		free_nodes(t_variable **list);
