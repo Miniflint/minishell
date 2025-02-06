@@ -212,7 +212,7 @@ void		expend(t_cmdli *cmdli);
 void		split_tokens(t_cmdli *cmdli);
 void		add_new_tok(t_cmdli *cmdli, char *cursor, int *is_first,
 				unsigned int len);
-int			*__get_is_first(int *__is_first);
+int			*__get_is_first(int *__is_first, int *i);
 
 // List utils
 void		free_nodes(t_variable **list);

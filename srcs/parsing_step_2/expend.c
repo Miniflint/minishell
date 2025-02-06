@@ -48,8 +48,10 @@ void	expend(t_cmdli *cmdli)
 	cmdli->tok_cursor = cmdli->tokens;
 	while (cmdli->tok_cursor)
 	{
-		if (check_var(cmdli->tok_cursor->token) || (*cmdli->tok_cursor->token == '~'
-			&& (!cmdli->tok_cursor->token[1] || cmdli->tok_cursor->token[1] == '/')))
+		if (check_var(cmdli->tok_cursor->token)
+			|| (*cmdli->tok_cursor->token == '~'
+				&& (!cmdli->tok_cursor->token[1]
+					|| cmdli->tok_cursor->token[1] == '/')))
 			(void)expend_var(cmdli);
 		cmdli->tok_cursor = cmdli->tok_cursor->next;
 	}

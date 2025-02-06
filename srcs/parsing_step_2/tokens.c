@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	*__get_is_first(int *__is_first)
+int	*__get_is_first(int *__is_first, int *i)
 {
 	static int	*is_first;
 
@@ -8,6 +8,8 @@ int	*__get_is_first(int *__is_first)
 	{
 		is_first = __is_first;
 		*is_first = 1;
+		if (i)
+			*i = 0;
 	}
 	return (is_first);
 }
@@ -55,7 +57,8 @@ void	random_hehe(t_cmdli *cmdli, char **cursor, char *quote, int *i)
 	}
 	if ((*cursor)[(*i)] == ' ')
 	{
-		add_new_tok(cmdli, (*cursor), __get_is_first(NULL), (unsigned int)(*i));
+		add_new_tok(cmdli, (*cursor),
+			__get_is_first(NULL, NULL), (unsigned int)(*i));
 		(*cursor) += *i + 1;
 		while (*(*cursor) == ' ')
 			++(*cursor);
@@ -72,8 +75,7 @@ void	split_tokens(t_cmdli *cmdli)
 	char		*cursor;
 
 	cursor = tmp;
-	__get_is_first(&is_first);
-	i = 0;
+	__get_is_first(&is_first, &i);
 	while (*cursor == ' ')
 		++cursor;
 	if (!*cursor)
@@ -89,7 +91,7 @@ void	split_tokens(t_cmdli *cmdli)
 	while (cursor[i])
 		random_hehe(cmdli, &cursor, &quote, &i);
 	if (i && cursor[i - 1] != ' ')
-		add_new_tok(cmdli, cursor, __get_is_first(NULL), i);
+		add_new_tok(cmdli, cursor, __get_is_first(NULL, NULL), i);
 	free(tmp);
 }
 

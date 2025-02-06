@@ -1,13 +1,14 @@
 #include "minishell.h"
 
-void    offset_str(char *quote, int *offset, int *i, char *str)
+void	offset_str(char *quote, int *offset, int *i, char *str)
 {
-    if (*quote && str[*i + *offset] == *quote)
+	if (*quote && str[*i + *offset] == *quote)
 	{
 		*quote = 0;
 		(*offset)++;
 	}
-	else if (!*quote && (str[*i + *offset] == '\'' || str[*i + *offset] == '\"'))
+	else if (!*quote && (str[*i + *offset] == '\''
+			|| str[*i + *offset] == '\"'))
 		*quote = str[*i + *offset++];
 	else
 	{
@@ -27,7 +28,7 @@ char	*remove_quote(char *str)
 	quote = 0;
 	offset = 0;
 	while (str[i + offset])
-        offset_str(&quote, &offset, &i, str);
+		offset_str(&quote, &offset, &i, str);
 	str[i] = 0;
 	if (!offset)
 		return (str);
