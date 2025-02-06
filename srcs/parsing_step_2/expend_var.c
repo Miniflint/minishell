@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-char	*strfreejoin(char *s1, char *s2)
+static char	*strfreejoin(char *s1, char *s2)
 {
 	char	*str;
 	char	*ret;
@@ -28,11 +28,67 @@ char	*strfreejoin(char *s1, char *s2)
 	return (ret);
 }
 
+static void	add_var_to_str(t_cmdli *cmdli, char **token, char **cursor, int *i)
+{
+	char	*tmp;
+
+	if (*(*cursor) == '?')
+	{
+		*token = strfreejoin(*token, ft_get_var("?"));
+		if (!*token)
+			malloc_error(&cmdli);
+		++(*cursor);
+		*i = 0;
+	}
+	else
+	{
+		while (ft_isalnum((*cursor)[*i]))
+			++(*i);
+		tmp = ft_strldup((*cursor), (unsigned)(*i));
+		if (!tmp)
+			malloc_error(&cmdli);
+		*token = strfreejoin(*token, ft_get_var(tmp));
+		free(tmp);
+		if (!*token)
+			malloc_error(&cmdli);
+		(*cursor) += *i;
+		*i = 0;
+	}
+}
+
+static void	in_quote(char *cursor, int *i)
+{
+	++(*i);
+	while (cursor[*i] && cursor[*i] != '\'')
+		++(*i);
+	if (cursor[*i])
+		++(*i);
+}
+
+static void	get_expend_value(char *quote, char **cursor, int *i, t_cmdli *cmdli)
+{
+	if (*quote && (*cursor)[*i] == *quote)
+		*quote = 0;
+	else if (!*quote && (*cursor)[*i] == '"')
+		*quote = (*cursor)[*i];
+	if ((*cursor)[*i] == '$'
+		&& ((*cursor)[*i + 1] == '?' || ft_isalnum((*cursor)[*i + 1])))
+	{
+		cmdli->tok_cursor->token
+			= ft_strljoin(cmdli->tok_cursor->token, (*cursor), *i);
+		if (!cmdli->tok_cursor->token)
+			malloc_error(&cmdli);
+		(*cursor) += *i + 1;
+		*i = 0;
+		add_var_to_str(cmdli, &cmdli->tok_cursor->token, cursor, i);
+	}
+	else
+		++(*i);
+}
 
 int	expend_var(t_cmdli *cmdli)
 {
- 	char	*tmp;
-	char	*tmp2;
+	char	*tmp;
 	int		i;
 	char	*cursor;
 	char	quote;
@@ -45,60 +101,15 @@ int	expend_var(t_cmdli *cmdli)
 	while (cursor[i])
 	{
 		if (!quote && cursor[i] == '\'')
-		{
-			++i;
-			while (cursor[i] && cursor[i] != '\'')
-				++i;
-			if (cursor[i])
-				++i;
-		}
+			in_quote(cursor, &i);
 		else
-		{
-			if (quote && cursor[i] == quote)
-				quote = 0;
-			else if (!quote && cursor[i] == '"')
-				quote = cursor[i];
-			if (cursor[i] == '$' && (cursor[i + 1] == '?' || ft_isalnum(cursor[i + 1])))
-			{
-				cmdli->tok_cursor->token = ft_strljoin(cmdli->tok_cursor->token, cursor, i);
-				if (!cmdli->tok_cursor->token)
-					malloc_error(&cmdli);
-				cursor += i + 1;
-				i = 0;
-				if (*cursor == '?')
-				{
-
-					cmdli->tok_cursor->token = strfreejoin(cmdli->tok_cursor->token, ft_get_var("?"));
-					if (!cmdli->tok_cursor->token)
-						malloc_error(&cmdli);
-					++cursor;
-					i = 0;
-				}
-				else
-				{
-					while (ft_isalnum(cursor[i]))
-						++i;
-					tmp2 = ft_strldup(cursor, (unsigned)i);
-					if (!tmp2)
-						malloc_error(&cmdli);
-					cmdli->tok_cursor->token = strfreejoin(cmdli->tok_cursor->token, ft_get_var(tmp2));
-					free(tmp2);
-					if (!cmdli->tok_cursor->token)
-						malloc_error(&cmdli);
-					cursor += i;
-					i = 0;
-				}
-			}
-			else
-				++i;
-		}
+			get_expend_value(&quote, &cursor, &i, cmdli);
 	}
 	if (i)
-	{
-		cmdli->tok_cursor->token = ft_strljoin(cmdli->tok_cursor->token, cursor, i);
-		if (!cmdli->tok_cursor->token)
-			malloc_error(&cmdli);
-	}
+		cmdli->tok_cursor->token
+			= ft_strljoin(cmdli->tok_cursor->token, cursor, i);
+	if (i && !cmdli->tok_cursor->token)
+		malloc_error(&cmdli);
 	if (tmp)
 		free(tmp);
 	return (0);
