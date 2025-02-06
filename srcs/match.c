@@ -127,11 +127,11 @@ void	check_open_dir(char *separators, t_cmdli *cmdli)
 			return ;
 		}
 		rec_dir(info, 0, cmdli, &param);
+		free(info.base_path);
 		closedir(info.dir_ptr);
 	}
 	i = 0;
 	while (info.sep[i])
 		free(info.sep[i++]);
 	free(info.sep_base_ptr);
-	free(info.base_path);
 }
