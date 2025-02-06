@@ -21,7 +21,8 @@ int	store_tokens(t_cmdli *cmdli)
 		else if (cmdli->tok_cursor->type == ARG)
 			ret = add_arg(cmdli, get_and_set_token(cmdli));
 		else
-			ret = add_file(cmdli, get_and_set_token(cmdli), cmdli->tok_cursor->type);
+			ret = add_file(cmdli, get_and_set_token(cmdli),
+					cmdli->tok_cursor->type);
 		if (ret)
 			return (1);
 		cmdli->tok_cursor = cmdli->tok_cursor->next;

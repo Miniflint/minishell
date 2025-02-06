@@ -1,25 +1,4 @@
-#include "../../incs/minishell.h"
-
-void	open_parenthesis(t_cmdli **cmds_list, t_shell *shell, t_type *type)
-{
-	*type = OPEN_P;
-	++shell->parenthesis;
-	++(*cmds_list)->create_fork;
-}
-
-void	close_parenthesis(t_cmdli **cmds_list, t_shell *shell, t_type *type)
-{
-	*type = CLOSE_P;
-	--shell->parenthesis;
-	++(*cmds_list)->exit_fork;
-}
-
-int	check_close_parenthesis(char *s, char *token, t_shell *shell, t_type type)
-{
-	return (ft_strcmp_int(s, token) && shell->parenthesis - 1 >= 0
-		&& shell->parenthesis == shell->cmd_cmpt
-		&& (type == CMD || type == ARG || type == RFILE || type == CLOSE_P));
-}
+#include "minishell.h"
 
 void	interpret_func(char *s, t_cmdli **cmds_list, t_type *type, int rd)
 {
@@ -31,7 +10,8 @@ void	interpret_func(char *s, t_cmdli **cmds_list, t_type *type, int rd)
 		*type = RDO;
 	else if (ft_strcmp_int(s, ">>") && !rd)
 		*type = RDOA;
-	else if (ft_strcmp_int(s, "(") && (*type == EMPTY || *type == PIPE || *type == ANDOR || *type == OPEN_P))
+	else if (ft_strcmp_int(s, "(") && (*type == EMPTY || *type == PIPE
+			|| *type == ANDOR || *type == OPEN_P))
 		open_parenthesis(cmds_list, ft_get_shell(NULL), type);
 	else if (check_close_parenthesis(s, ")", ft_get_shell(NULL), *type))
 		close_parenthesis(cmds_list, ft_get_shell(NULL), type);

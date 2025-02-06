@@ -192,7 +192,10 @@ int			add_file(t_cmdli *cmdli, char *file, t_type type);
 void		type_and_set(char *s, t_cmdli **cmds_list,
 				t_type *type, int interpret);
 t_cmdli		*get_cmds(char **cmdline);
-
+int			check_close_parenthesis(char *s, char *token,
+				t_shell *shell, t_type type);
+void		close_parenthesis(t_cmdli **cmds_list, t_shell *shell, t_type *type);
+void		open_parenthesis(t_cmdli **cmds_list, t_shell *shell, t_type *type);
 // Parsing step 2
 int			store_tokens(t_cmdli *cmdli);
 
