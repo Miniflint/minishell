@@ -142,7 +142,7 @@ char	*remove_quote(char *str);
 // Match
 int		match(char *s1, char *s2, char quote);
 void	rec_dir(t_match info, int depth, t_cmdli *cmdli, int *is_first);
-void	if_rec_dir(t_cmdli *cmdli, t_p_match *p, t_match info, char **get_name);
+void	if_rec_dir(t_cmdli *cmdli, t_p_match *p, t_match info, char *get_name);
 void	check_open_dir(char *separators, t_cmdli *cmdli);
 char	*get_path_sep(t_match *info, char *separators);
 

@@ -36,15 +36,17 @@ char	*join_path_free(t_match *info, char *path, int i)
 
 	tmp = NULL;
 	new_path = NULL;
+	if (!path || !info->sep[i])
+		return (NULL);
 	tmp = ft_strjoin(path, info->sep[i]);
+	free(path);
 	if (!tmp)
 		return (NULL);
-	free(path);
 	new_path = ft_strjoin(tmp, "/");
-	if (!new_path)
-		return (NULL);
 	free(tmp);
 	free(info->sep[i]);
+	if (!new_path)
+		return (NULL);
 	info->sep[i] = NULL;
 	return (new_path);
 }

@@ -86,6 +86,8 @@ char	*get_path_sep(t_match *info, char *separators)
 	char	*path;
 
 	info->sep = ft_split(separators, '/');
+	if (!info->sep)
+		return (NULL);
 	info->sep_base_ptr = info->sep;
 	i = 0;
 	path = NULL;
