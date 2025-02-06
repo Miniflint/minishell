@@ -194,7 +194,7 @@ t_cmdli		*get_cmds(char **cmdline);
 int			check_close_parenthesis(char *s, char *token,
 				t_shell *shell, t_type type);
 void		close_parenthesis(t_cmdli **cmds_list,
-			t_shell *shell, t_type *type);
+				t_shell *shell, t_type *type);
 void		open_parenthesis(t_cmdli **cmds_list, t_shell *shell, t_type *type);
 
 // Parsing step 2
