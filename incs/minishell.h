@@ -196,11 +196,23 @@ int			check_close_parenthesis(char *s, char *token,
 				t_shell *shell, t_type type);
 void		close_parenthesis(t_cmdli **cmds_list, t_shell *shell, t_type *type);
 void		open_parenthesis(t_cmdli **cmds_list, t_shell *shell, t_type *type);
+
 // Parsing step 2
 int			store_tokens(t_cmdli *cmdli);
 int			expend_var(t_cmdli *cmdli);
 char		*expend_home(t_cmdli *cmdli, int *i);
 char		*ft_strljoin(char *s1, char *s2, int len);
+char		*remove_quote(char *str);
+int			check_wildcard(char *s);
+int			check_var(char *s);
+char		*expend_home(t_cmdli *cmdli, int *i);
+char		*ft_strljoin(char *s1, char *s2, int len);
+void		clean_tokens(t_cmdli *cmdli);
+void		expend(t_cmdli *cmdli);
+void		split_tokens(t_cmdli *cmdli);
+void		add_new_tok(t_cmdli *cmdli, char *cursor, int *is_first,
+				unsigned int len);
+int			*__get_is_first(int *__is_first);
 
 // List utils
 void		free_nodes(t_variable **list);
