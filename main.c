@@ -1,6 +1,5 @@
 #include "minishell.h"
 #include "printfd/HEADER/ft_printfd.h"
-#include <stdio.h>
 
 int	g_errno;
 
@@ -164,110 +163,6 @@ char	*ft_strljoin(char *s1, char *s2, int len)
 	return (ret);
 }
 
-char	*strfreejoin(char *s1, char *s2)
-{
-	char	*str;
-	char	*ret;
-	char	*tmp;
-
-	str = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
-	ret = str;
-	if (!str)
-		return (0);
-	if (s1)
-	{
-		tmp = s1;
-		while (*s1)
-			*(str++) = *(s1++);
-		free(tmp);
-	}
-	if (s2)
-	{
-		tmp = s2;
-		while (*s2)
-			*(str++) = *(s2++);
-		free(tmp);
-	}
-	*str = 0;
-	return (ret);
-}
-
-
-int	expend_var(t_cmdli *cmdli)
-{
- 	char	*tmp;
-	char	*tmp2;
-	int		i;
-	char	*cursor;
-	char	quote;
-
-	i = 0;
-	tmp = expend_home(cmdli, &i);
-	cursor = tmp + i;
-	i = 0;
-	quote = 0;
-	while (cursor[i])
-	{
-		if (!quote && cursor[i] == '\'')
-		{
-			++i;
-			while (cursor[i] && cursor[i] != '\'')
-				++i;
-			if (cursor[i])
-				++i;
-		}
-		else
-		{
-			if (quote && cursor[i] == quote)
-				quote = 0;
-			else if (!quote && cursor[i] == '"')
-				quote = cursor[i];
-			if (cursor[i] == '$' && (cursor[i + 1] == '?' || ft_isalnum(cursor[i + 1])))
-			{
-				cmdli->tok_cursor->token = ft_strljoin(cmdli->tok_cursor->token, cursor, i);
-				if (!cmdli->tok_cursor->token)
-					malloc_error(&cmdli);
-				cursor += i + 1;
-				i = 0;
-				if (*cursor == '?')
-				{
-
-					cmdli->tok_cursor->token = strfreejoin(cmdli->tok_cursor->token, ft_get_var("?"));
-					if (!cmdli->tok_cursor->token)
-						malloc_error(&cmdli);
-					++cursor;
-					i = 0;
-				}
-				else
-				{
-					while (ft_isalnum(cursor[i]))
-						++i;
-					tmp2 = ft_strldup(cursor, (unsigned)i);
-					if (!tmp2)
-						malloc_error(&cmdli);
-					cmdli->tok_cursor->token = strfreejoin(cmdli->tok_cursor->token, ft_get_var(tmp2));
-					free(tmp2);
-					if (!cmdli->tok_cursor->token)
-						malloc_error(&cmdli);
-					cursor += i;
-					i = 0;
-				}
-			}
-			else
-				++i;
-		}
-	}
-	if (i)
-	{
-		cmdli->tok_cursor->token = ft_strljoin(cmdli->tok_cursor->token, cursor, i);
-		if (!cmdli->tok_cursor->token)
-			malloc_error(&cmdli);
-	}
-	if (tmp)
-		free(tmp);
-	return (0);
-}
-
 char	*remove_quote(char *str)
 {
 	char	*ret;
@@ -299,36 +194,15 @@ char	*remove_quote(char *str)
 	ret = ft_strdup(str);
 	free(str);
 	if (!ret)
-		malloc_error(NULL); //Get_cmdli
+		malloc_error(get_cmdli(NULL));
 	return (ret);
 }
 
-void	expend(t_cmdli *cmdli)
+void	clean_tokens(t_cmdli *cmdli)
 {
 	t_unlist	*tmp;
 
 	tmp = NULL;
-	cmdli->tok_cursor = cmdli->tokens;
-	while (cmdli->tok_cursor)
-	{
-		if (check_var(cmdli->tok_cursor->token)
-			|| (*cmdli->tok_cursor->token == '~' && (!cmdli->tok_cursor->token[1] || cmdli->tok_cursor->token[1] == '/')))
-			(void)expend_var(cmdli);
-		cmdli->tok_cursor = cmdli->tok_cursor->next;
-	}
-	cmdli->tok_cursor = cmdli->tokens;
-	while (cmdli->tok_cursor)
-	{
-		if (check_wildcard(cmdli->tok_cursor->token))
-			check_open_dir(cmdli->tok_cursor->token, cmdli);
-		cmdli->tok_cursor = cmdli->tok_cursor->next;
-	}
-	cmdli->tok_cursor = cmdli->tokens;
-	while (cmdli->tok_cursor)
-	{
-		split_tokens(cmdli);
-		cmdli->tok_cursor = cmdli->tok_cursor->next;
-	}
 	cmdli->tok_cursor = cmdli->tokens;
 	while (cmdli->tok_cursor)
 	{
@@ -351,11 +225,34 @@ void	expend(t_cmdli *cmdli)
 	}
 }
 
-void	execution(t_cmdli *cmdli, int status)
+void	expend(t_cmdli *cmdli)
 {
-	t_cmdli	*cmdli_i;
+	cmdli->tok_cursor = cmdli->tokens;
+	while (cmdli->tok_cursor)
+	{
+		if (check_var(cmdli->tok_cursor->token)
+			|| (*cmdli->tok_cursor->token == '~' && (!cmdli->tok_cursor->token[1] || cmdli->tok_cursor->token[1] == '/')))
+			(void)expend_var(cmdli);
+		cmdli->tok_cursor = cmdli->tok_cursor->next;
+	}
+	cmdli->tok_cursor = cmdli->tokens;
+	while (cmdli->tok_cursor)
+	{
+		if (check_wildcard(cmdli->tok_cursor->token))
+			check_open_dir(cmdli->tok_cursor->token, cmdli);
+		cmdli->tok_cursor = cmdli->tok_cursor->next;
+	}
+	cmdli->tok_cursor = cmdli->tokens;
+	while (cmdli->tok_cursor)
+	{
+		split_tokens(cmdli);
+		cmdli->tok_cursor = cmdli->tok_cursor->next;
+	}
+	clean_tokens(cmdli);
+}
 
-	cmdli_i = cmdli;
+void	execution_while(t_cmdli *cmdli_i)
+{
 	while (cmdli_i)
 	{
 		expend(cmdli_i);
@@ -371,6 +268,11 @@ void	execution(t_cmdli *cmdli, int status)
 		if (cmdli_i)
 			cmdli_i = cmdli_i->next;
 	}
+}
+
+void	execution(t_cmdli *cmdli, int status)
+{
+	execution_while(cmdli);
 	while (wait(&status) != -1)
 		if (WIFEXITED(status))
 			g_errno = WEXITSTATUS(status);
@@ -397,6 +299,7 @@ void	parsing(t_shell *shell, t_cmdli *cmdli, int status)
 	if (cmdli)
 		execution(cmdli, status);
 	free(shell->read);
+	shell->read = NULL;
 }
 
 int	main(int ac, char **av, char **env)
@@ -408,7 +311,7 @@ int	main(int ac, char **av, char **env)
 	(void)av;
 	status = 0;
 	cmdli = NULL;
-	init_shell(&shell, env);
+	init_shell(&shell, &cmdli, env);
 	ft_say_check(ac, &shell);
 	//print_minishell();
 	term_handler();

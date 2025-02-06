@@ -198,6 +198,9 @@ void		close_parenthesis(t_cmdli **cmds_list, t_shell *shell, t_type *type);
 void		open_parenthesis(t_cmdli **cmds_list, t_shell *shell, t_type *type);
 // Parsing step 2
 int			store_tokens(t_cmdli *cmdli);
+int			expend_var(t_cmdli *cmdli);
+char		*expend_home(t_cmdli *cmdli, int *i);
+char		*ft_strljoin(char *s1, char *s2, int len);
 
 // List utils
 void		free_nodes(t_variable **list);
@@ -208,8 +211,9 @@ t_variable	*get_last_node(t_variable *list);
 void		add_node_back(t_variable **list, t_variable *new);
 
 // Init
-void		init_shell(t_shell *shell, char **env);
+void		init_shell(t_shell *shell, t_cmdli **cmdli, char **env);
 t_shell		*ft_get_shell(t_shell *new_shell);
+t_cmdli		**get_cmdli(t_cmdli **new_cmdli);
 t_variable	*ft_get_env(void);
 char		**ft_get_str_env(void);
 t_variable	*ft_get_export(void);

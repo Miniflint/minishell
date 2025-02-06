@@ -60,9 +60,11 @@ char	**copy_change_shlvl(char **env_str)
 	return (ret);
 }
 
-void	init_shell(t_shell *shell, char **m_env)
+void	init_shell(t_shell *shell, t_cmdli **cmdli, char **m_env)
 {
 	(void)ft_get_shell(shell);
+	(void)get_cmdli(cmdli);
+	shell->read = NULL;
 	shell->str_env = copy_change_shlvl(m_env);
 	shell->env = init_env(shell->str_env);
 	shell->export = init_export();

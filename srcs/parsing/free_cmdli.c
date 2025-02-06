@@ -68,7 +68,7 @@ void	free_cmdli(t_cmdli **cmdli)
 {
 	t_cmdli	*tmp;
 
-	if (!cmdli)
+	if (!cmdli || !*cmdli)
 		return ;
 	*cmdli = cmdli_first(*cmdli);
 	while (*cmdli)

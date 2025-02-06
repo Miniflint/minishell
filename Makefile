@@ -22,7 +22,8 @@ SRCS	=	main.c                                   srcs/images/image_10_12.c       
 			srcs/fun/ft_say.c                        srcs/parsing/add_andor.c                 srcs/secure/free_tab_null.c	\
 			srcs/fun/print_minishell.c               srcs/parsing/add_arg.c                   srcs/signals/sig_handler.c	\
 			srcs/match.c                             srcs/match_util.c                        srcs/match_util_2.c	\
-			srcs/init/ft_prompt_utils2.c			 srcs/secure/malloc_error.c               srcs/parsing/parenthesis.c
+			srcs/init/ft_prompt_utils2.c			 srcs/secure/malloc_error.c               srcs/parsing/parenthesis.c	\
+			srcs/init/get_cmdli.c					 srcs/parsing_step_2/expend_var.c
 
 INC_FLAGS := -Ilibs/libft/incs -Iincs
 LIBS := -Llibft -lft -lreadline
@@ -36,7 +37,7 @@ OBJS	=	$(SRCS:.c=.o)
 CC		=	gcc
 RM		=	rm -f
 
-CFLAGS	=	-Wall -Wextra -Werror
+CFLAGS	=	-Wall -Wextra -Werror -g
 
 ifeq ($(DEBUG), 1)
 	CFLAGS += -fsanitize=address -g3
