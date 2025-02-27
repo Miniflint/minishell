@@ -11,7 +11,9 @@
 # include <stdlib.h>
 # include <signal.h>
 # include <limits.h>
-# include <linux/limits.h>
+# ifdef __unix__
+#  include <linux/limits.h>
+# endif
 # include <dirent.h>
 # include <sys/wait.h>
 # include "../libft/libft.h"
@@ -134,6 +136,8 @@ typedef struct s_match_info
 	int		dir_or_file;
 	int		absolute_path;
 }	t_match;
+
+void		view_cmdli(t_cmdli *cmdli);
 
 char		*remove_quote(char *str);
 int			idk_anymore(char ***sep, int i, int j);

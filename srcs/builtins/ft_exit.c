@@ -53,7 +53,7 @@ void	ft_exit(t_cmdli **cmdli)
 	free_cmdli(cmdli);
 	if (ft_get_shell(NULL)->read)
 		free(ft_get_shell(NULL)->read);
-	rl_clear_history();
+	clear_history(); // rl_ for linux
 	exit(code % 256);
 }
 
@@ -63,6 +63,6 @@ void	ft_sig_exit(void)
 	free_shell_variables();
 	if (ft_get_shell(NULL)->read)
 		free(ft_get_shell(NULL)->read);
-	rl_clear_history();
+	clear_history(); // rl_ for linux
 	exit(g_errno);
 }

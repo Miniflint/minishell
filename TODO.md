@@ -35,7 +35,7 @@
 
 
 optional:
-- [ ] parsing for bonuses
+- [x] parsing for bonuses
 - [x] get parent folder git branch for prompt line
 - [ ] take care of CDPATH variable -> should be added if updated
 - [ ] Implement \

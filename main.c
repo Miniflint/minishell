@@ -24,6 +24,7 @@ void	execution_while(t_cmdli *cmdli_i)
 
 void	execution(t_cmdli *cmdli, int status)
 {
+	view_cmdli(cmdli);//temp
 	execution_while(cmdli);
 	while (wait(&status) != -1)
 		if (WIFEXITED(status))

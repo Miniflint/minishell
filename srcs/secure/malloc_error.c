@@ -20,7 +20,7 @@ void	malloc_error(t_cmdli **cmdli)
 	if (m_env)
 		free_tab(m_env);
 	free_cmdli(cmdli);
-	rl_clear_history();
+	clear_history(); // rl_ for linux
 	ft_printfd(2, "#+minishell#0:#/r memory allocation error#0\n");
 	exit(1);
 }
