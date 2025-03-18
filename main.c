@@ -14,7 +14,8 @@ void	execution_while(t_cmdli *cmdli_i)
 			sig_mode(1);
 			if (!cmdli_i->cmd)
 				no_cmd(&cmdli_i);
-			is_builtin(&cmdli_i, (cmdli_i->pipe_in || cmdli_i->pipe_out));
+			else
+				is_builtin(&cmdli_i, (cmdli_i->pipe_in || cmdli_i->pipe_out));
 			sig_mode(0);
 		}
 		if (cmdli_i)

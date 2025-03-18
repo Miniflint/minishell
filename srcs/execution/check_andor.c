@@ -30,8 +30,6 @@ int	andor_while_check(t_cmdli **cmdli, int new_errno)
 			if (check_next_andor(cmdli, new_errno))
 				return (1);
 		}
-		// if (!(*cmdli)->next)
-		// 	return (1);
 	}
 	if (!(*cmdli))
 		return (1);

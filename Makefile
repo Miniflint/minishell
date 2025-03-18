@@ -85,11 +85,7 @@ fclean:	clean
 
 re: fclean all
 
-build:
-	docker build -t arch .
-	docker run -ti arch
-prune:
-	docker system prune -a --volumes
+bonus: all
 
-.PHONY:	all clean fclean re build prune
-.SILENT: $(NAME) bonus clean fclean re build prune
+.PHONY:	all clean fclean re bonus
+.SILENT: $(NAME) bonus clean fclean re
