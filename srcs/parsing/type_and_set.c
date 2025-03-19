@@ -20,10 +20,10 @@ void	interpret_func(char *s, t_cmdli **cmds_list, t_type *type, int rd)
 		add_pipe(cmds_list, type);
 	else if (ft_strcmp_int(s, "||")
 		&& (*type == CMD || *type == ARG || *type == RFILE || *type == CLOSE_P))
-		add_andor(cmds_list, type, 2);
+		add_andor(cmds_list, type, OR_VALUE);
 	else if (ft_strcmp_int(s, "&&")
 		&& (*type == CMD || *type == ARG || *type == RFILE || *type == CLOSE_P))
-		add_andor(cmds_list, type, 1);
+		add_andor(cmds_list, type, AND_VALUE);
 	else
 		return (error_cmdli_interpret(cmds_list, s));
 	free(s);

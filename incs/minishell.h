@@ -23,6 +23,14 @@
 #  define DT_DIR 4
 # endif
 
+# ifndef AND_VALUE
+#  define AND_VALUE 1
+# endif
+
+# ifndef OR_VALUE
+#  define OR_VALUE 2
+# endif
+
 // Readline
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -102,6 +110,7 @@ typedef struct s_cmdli
 	int				*pipe_out;
 	int				create_fork;
 	int				exit_fork;
+	int				p_lvl;
 	int				here_doc;
 	int				fd_in;
 	int				fd_out;

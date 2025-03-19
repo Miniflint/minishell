@@ -18,6 +18,7 @@ void	view_cmdli(t_cmdli *cmdli)
 		ft_printfd(1, "Pipe out : %p\n", cmdli->pipe_out);
 		ft_printfd(1, "P in     : %d\n", cmdli->create_fork);
 		ft_printfd(1, "P out    : %d\n", cmdli->exit_fork);
+		ft_printfd(1, "P lvl    : %d\n", cmdli->p_lvl);
 		cmdli = cmdli->next;
 	}
 }
