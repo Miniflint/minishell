@@ -40,7 +40,6 @@ void	edit_p_lvl(t_cmdli *cmdli)
 void	execution(t_cmdli *cmdli, int status)
 {
 	edit_p_lvl(cmdli);
-	view_cmdli(cmdli);//temp
 	execution_while(cmdli);
 	while (wait(&status) != -1)
 		if (WIFEXITED(status))
