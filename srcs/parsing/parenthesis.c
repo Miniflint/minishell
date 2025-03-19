@@ -17,6 +17,5 @@ void	close_parenthesis(t_cmdli **cmds_list, t_shell *shell, t_type *type)
 int	check_close_parenthesis(char *s, char *token, t_shell *shell, t_type type)
 {
 	return (ft_strcmp_int(s, token) && shell->parenthesis - 1 >= 0
-		&& shell->parenthesis == shell->cmd_cmpt
 		&& (type == CMD || type == ARG || type == RFILE || type == CLOSE_P));
 }
