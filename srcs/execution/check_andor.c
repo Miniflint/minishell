@@ -18,7 +18,7 @@ int	check_next_andor(t_cmdli **cmdli, int new_errno)
 		check = -1;
 	if (check >= 0 && check <= (*cmdli)->p_lvl)
 	{
-		while ((*cmdli) && (*cmdli)->next && check <= (*cmdli)->next->p_lvl)
+		while ((*cmdli) && check <= (*cmdli)->p_lvl)
 		{
 			(*cmdli)->previous = (*cmdli);
 			(*cmdli) = (*cmdli)->next;
