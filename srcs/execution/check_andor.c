@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_andor.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trgoel <trgoel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: herolle <herolle@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 19:26:35 by trgoel            #+#    #+#             */
-/*   Updated: 2025/03/21 19:27:04 by trgoel           ###   ########.fr       */
+/*   Updated: 2025/03/21 20:41:14 by herolle          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,9 @@ int	check_next_andor(t_cmdli **cmdli, int new_errno)
 		check = -1;
 	if (check >= 0 && check <= (*cmdli)->p_lvl)
 	{
-		while ((*cmdli) && check <= (*cmdli)->p_lvl)
+		if (!(*cmdli)->next)
+			return (1);
+		while ((*cmdli) && (*cmdli)->next && check <= (*cmdli)->next->p_lvl)
 		{
 			(*cmdli)->previous = (*cmdli);
 			(*cmdli) = (*cmdli)->next;

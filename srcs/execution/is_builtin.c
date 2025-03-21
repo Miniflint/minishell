@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   is_builtin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trgoel <trgoel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: herolle <herolle@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 19:26:50 by trgoel            #+#    #+#             */
-/*   Updated: 2025/03/21 19:26:59 by trgoel           ###   ########.fr       */
+/*   Updated: 2025/03/21 20:41:56 by herolle          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,11 @@ void	exec_builtin(void (*f)(t_cmdli **), t_cmdli **cmdli, int mode)
 
 void	is_builtin(t_cmdli **cmdli, int mode)
 {
-	if (andor_check(cmdli) || (*cmdli)->cmd_error || !((*cmdli)->cmd))
+	if (andor_check(cmdli) || (*cmdli)->cmd_error)
 		return ;
-	if (!ft_strcmp((*cmdli)->cmd, "env"))
+	if (!((*cmdli)->cmd))
+		no_cmd(cmdli);
+	else if (!ft_strcmp((*cmdli)->cmd, "env"))
 		exec_builtin(ft_env, cmdli, mode);
 	else if (!ft_strcmp((*cmdli)->cmd_args[0], "export"))
 		exec_builtin(ft_export, cmdli, mode);
