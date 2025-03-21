@@ -8,11 +8,12 @@
 
 int	check_next_andor(t_cmdli **cmdli, int new_errno)
 {
-	int check;
+	int	check;
 
 	if ((*cmdli) && ((new_errno && (*cmdli)->and_or == AND_VALUE)
-		|| (!new_errno && (*cmdli)->and_or == OR_VALUE)) && ((*cmdli)->previous
-				&& (*cmdli)->previous->p_lvl < (*cmdli)->p_lvl))
+			|| (!new_errno && (*cmdli)->and_or == OR_VALUE))
+		&& ((*cmdli)->previous
+			&& (*cmdli)->previous->p_lvl < (*cmdli)->p_lvl))
 		check = (*cmdli)->p_lvl;
 	else
 		check = -1;
@@ -32,7 +33,7 @@ int	check_next_andor(t_cmdli **cmdli, int new_errno)
 int	andor_while_check(t_cmdli **cmdli, int new_errno)
 {
 	while ((*cmdli) && ((new_errno && (*cmdli)->and_or == 1)
-		|| (!new_errno && (*cmdli)->and_or == 2)))
+			|| (!new_errno && (*cmdli)->and_or == 2)))
 	{
 		if ((*cmdli)->pipe_in && (*cmdli)->pipe_in[0] == -1
 			&& (*cmdli)->pipe_in[0] == -1)

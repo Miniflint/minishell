@@ -23,20 +23,6 @@ void	execution_while(t_cmdli *cmdli_i)
 	}
 }
 
-void	edit_p_lvl(t_cmdli *cmdli)
-{
-	int	new_lvl;
-
-	new_lvl = 0;
-	while (cmdli)
-	{
-		new_lvl += cmdli->create_fork;
-		cmdli->p_lvl = new_lvl;
-		new_lvl -= cmdli->exit_fork;
-		cmdli = cmdli->next;
-	}
-}
-
 void	execution(t_cmdli *cmdli, int status)
 {
 	edit_p_lvl(cmdli);
@@ -81,7 +67,7 @@ int	main(int ac, char **av, char **env)
 	cmdli = NULL;
 	init_shell(&shell, &cmdli, env);
 	ft_say_check(ac, &shell);
-	//print_minishell();
+	print_minishell();
 	term_handler();
 	signal(SIGQUIT, SIG_IGN);
 	sig_mode(1);

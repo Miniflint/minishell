@@ -36,7 +36,8 @@
 # include <readline/history.h>
 
 //globale pour recuperer la valeur du statut de exit
-extern int	g_errno;
+extern int				g_errno;
+typedef struct dirent	t_dir;
 
 typedef struct s_token
 {
@@ -123,8 +124,6 @@ typedef struct s_cmdli
 	struct s_cmdli	*next;
 }					t_cmdli;
 
-typedef struct dirent	t_dir;
-
 typedef struct s_param_match
 {
 	int	depth;
@@ -150,6 +149,7 @@ void		view_cmdli(t_cmdli *cmdli);
 
 char		*remove_quote(char *str);
 int			idk_anymore(char ***sep, int i, int j);
+void		edit_p_lvl(t_cmdli *cmdli);
 
 // Match
 int			match(char *s1, char *s2, char quote);
